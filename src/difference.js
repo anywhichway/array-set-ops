@@ -21,21 +21,64 @@ SOFTWARE.
  */
 
 import {loopFunctions} from "./loop-functions.js";
-
-function difference(...args) {
-    let base = this;
-    const set = !Array.isArray(base),
-        result = new Set();
-    if(set) base = [...base];
-    for(const item of base) {
-        if(!args.some((arg,i) => {
-            if(Array.isArray(arg)) arg = args[i] = new Set(arg);
-            return arg.has(item)
-        })) {
-            result.add(item);
+/* Portions of algorithm taken from old version of https://github.com/lovasoa/fast_array_intersect under MIT license */
+const create = (iterating) => {
+    let i, j, base, nOthers, args, memory, diff;
+    return function() {
+        const set = this instanceof Set;
+        if(!args) {
+            args = [...arguments],
+            base = set ? [...this] : this;
+            memory = new Set();
+            diff = new Set(),
+            i = 0;
+            j = 0;
         }
+        for(;i<base.length;i++) {
+            const item = base[i];
+            if (!memory.has(item)) {
+                memory.add(item);
+                for (; j < args.length; j++) {
+                    let arg = args[j];
+                    if (!(arg instanceof Set)) arg = args[j] = new Set(arg);
+                    if (arg.has(item)) {
+                        break;
+                    }
+                }
+                if (j === args.length) {
+                    diff.add(item);
+                    if(iterating) return {value: item}
+                }
+            }
+            j = 0;
+        }
+        args = null;
+        return iterating ? {done:true} : (set ? diff : [...diff]);
     }
-    return set ? result : [...result]
 }
+function iterable(...args) {
+    const difference = create(true),
+        set = this instanceof Set;
+    let started;
+    return {
+        next() {
+            if (started) {
+                return difference();
+            }
+            started = true;
+            return difference(...args);
+        },
+        [Symbol.iterator]() {
+            started = false;
+            return this;
+        },
+        ...loopFunctions
+    }
+}
+
+const difference = create();
+Object.defineProperty(difference,"iterable",{get() {
+        return iterable.bind(this);
+    }});
 
 export {difference,difference as default}

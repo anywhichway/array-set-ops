@@ -5,7 +5,6 @@ import union from "./union.js";
 import isDisjointFrom from "./is-disjoint-from.js";
 import isSupersetOf from "./is-superset-of.js";
 import isSubsetOf from "./is-subset-of.js";
-import loopFunctions from "./loop-functions.js";
 
 const classPrototype = {
     difference,
@@ -18,5 +17,4 @@ const classPrototype = {
 }
 
 
-
-export {loopFunctions,classPrototype,classPrototype as default}
+export {classPrototype,classPrototype as default}

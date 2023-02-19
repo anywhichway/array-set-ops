@@ -21,12 +21,9 @@ SOFTWARE.
  */
 
 function isDisjointFrom(...args) {
-    let base = this;
-    if(!Array.isArray(base)) base = [...base];
-    for(const item of base) {
+    for(const item of this) {
         if(args.some((arg,i) => {
-            if(Array.isArray(arg)) arg = args[i] = new Set(arg);
-            return arg.has(item);
+            return Array.isArray(arg) ? arg.includes(item) : arg.has(item);
         })) {
             return false;
         }

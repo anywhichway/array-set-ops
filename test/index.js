@@ -1,10 +1,53 @@
+
 const chai = await import("chai"),
     expect = chai.expect,
-    {classPrototype,loopFunctions} = await import("../src/index.js");
+    {classPrototype} = await import("../src/index.js"),
+    {loopFunctions} = await import("../src/loop-functions.js"),
+    {aggregateFunctions} = await import("../src/aggregate-functions.js"),
+    {cartesianProduct,CartesianProduct} = await import("../src/cartesian-product.js");
 
 Object.assign(Set.prototype,classPrototype);
 Object.assign(Set.prototype,loopFunctions);
+Object.assign(Set.prototype,aggregateFunctions);
+Set.prototype.cartesianProduct = cartesianProduct;
 Object.assign(Array.prototype,classPrototype);
+Object.assign(Array.prototype,aggregateFunctions);
+Array.prototype.cartesianProduct = cartesianProduct;
+
+describe("Cartesian",() => {
+    it("product",() => {
+        const product = CartesianProduct([1,2],[2,1]);
+        expect(product.length).to.equal(4);
+        expect(product.at(0)[0]).to.equal(1);
+        expect(product.at(0)[1]).to.equal(2);
+        expect(product.at(1)[0]).to.equal(1);
+        expect(product.at(1)[1]).to.equal(1);
+        expect(product.at(2)[0]).to.equal(2);
+        expect(product.at(2)[1]).to.equal(2);
+        expect(product.at(3)[0]).to.equal(2);
+        expect(product.at(3)[1]).to.equal(1);
+    });
+    it("loop",() => {
+        const product = CartesianProduct([1,2],[2,1]);
+        let i = 0;
+        for(const item of product) {
+            if(i==0) {
+                expect(item[0]).to.equal(1);
+                expect(item[1]).to.equal(2);
+            } else if(i===1) {
+                expect(item[0]).to.equal(1);
+                expect(item[1]).to.equal(2);
+            } else if(i===2) {
+                expect(item[0]).to.equal(2);
+                expect(item[1]).to.equal(2);
+            } else if(i===3) {
+                expect(item[0]).to.equal(2);
+                expect(item[1]).to.equal(1);
+            }
+            i++
+        }
+    })
+})
 
 describe("Array",() => {
     it("intersection",() => {
@@ -137,7 +180,7 @@ describe("Set",() => {
         result.forEach((item,i) => {
             expect(item).to.equal(i+1);
         })
-        expect(result.length).to.equal(4);
+        expect(result.size).to.equal(4);
     })
     it("symmetricDifference",() => {
         const set = new Set([1,2,4]),

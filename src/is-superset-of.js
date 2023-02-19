@@ -23,13 +23,11 @@ SOFTWARE.
 function isSupersetOf(...args){
     let base = this;
     if(Array.isArray(base)) base = new Set(base);
-    args = args.map((arg) => {
-        return Array.isArray(arg) ? [...new Set(arg)] : arg
-    });
-    for(const array of args) {
-        if(array.length>base.size) return false;
-        for(const item of array) {
-            if(!base.has(item)) return false;
+    for(let set of args) {
+        if(set instanceof Set && set.size>base.size) return false;
+        for(const item of set) {
+            if(base.has(item)) continue;
+            return false;
         }
     }
     return true;

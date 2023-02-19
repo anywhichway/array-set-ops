@@ -1,60 +1,131 @@
-/* MIT License
-Copyright (c) 2023 Simon Y. Blackwell
+function $parcel$defineInteropFlag(a) {
+  Object.defineProperty(a, '__esModule', {value: true, configurable: true});
+}
+function $parcel$export(e, n, v, s) {
+  Object.defineProperty(e, n, {get: v, set: s, enumerable: true, configurable: true});
+}
+var $parcel$global =
+typeof globalThis !== 'undefined'
+  ? globalThis
+  : typeof self !== 'undefined'
+  ? self
+  : typeof window !== 'undefined'
+  ? window
+  : typeof global !== 'undefined'
+  ? global
+  : {};
+var $parcel$modules = {};
+var $parcel$inits = {};
 
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
+var parcelRequire = $parcel$global["parcelRequired1f4"];
+if (parcelRequire == null) {
+  parcelRequire = function(id) {
+    if (id in $parcel$modules) {
+      return $parcel$modules[id].exports;
+    }
+    if (id in $parcel$inits) {
+      var init = $parcel$inits[id];
+      delete $parcel$inits[id];
+      var module = {id: id, exports: {}};
+      $parcel$modules[id] = module;
+      init.call(module.exports, module, module.exports);
+      return module.exports;
+    }
+    var err = new Error("Cannot find module '" + id + "'");
+    err.code = 'MODULE_NOT_FOUND';
+    throw err;
+  };
 
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
+  parcelRequire.register = function register(id, init) {
+    $parcel$inits[id] = init;
+  };
 
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
- */ const $2e79f34cf327f706$export$a42bef84e41fffbb = {
-    forEach (f) {
-        return [
+  $parcel$global["parcelRequired1f4"] = parcelRequire;
+}
+parcelRequire.register("3Zole", function(module, exports) {
+
+$parcel$defineInteropFlag(module.exports);
+
+$parcel$export(module.exports, "loopFunctions", () => $2e79f34cf327f706$export$a42bef84e41fffbb);
+$parcel$export(module.exports, "default", () => $2e79f34cf327f706$export$a42bef84e41fffbb);
+parcelRequire("5ETxi");
+const $2e79f34cf327f706$export$a42bef84e41fffbb = {
+    at (index) {
+        if (index >= 0) {
+            let i = 0;
+            for (const item of this){
+                if (i === index) return item;
+                i++;
+            }
+            return;
+        }
+        const array = !Array.isArray(this) ? [
             ...this
-        ].forEach(f);
+        ] : this;
+        return array[array.length - index - 1];
+    },
+    every (f) {
+        let i = 0;
+        for (const item of this){
+            if (!f(item, i++, this)) return false;
+        }
+        return true;
+    },
+    filter (f) {
+        const set = this instanceof Set, result = set ? new Set() : [];
+        let i = 0;
+        for (const item of this)if (f(item, i++, this)) set ? result.add(item) : result.push(item);
+        return result;
+    },
+    find (f) {
+        let i = 0;
+        for (const item of this){
+            if (f(item, i++, this)) return item;
+        }
+    },
+    findIndex (f) {
+        let i = 0;
+        for (const item of this){
+            if (f(item, i++, this)) return i;
+        }
+    },
+    forEach (f) {
+        let i = 0;
+        for (const item of this)f(item, i++, this);
     },
     map (f) {
-        return new this.constructor([
-            ...this
-        ].map(f));
+        const set = this instanceof Set, result = set ? new Set() : [];
+        let i = 0;
+        for (const item of this){
+            const value = f(item, i++, this);
+            set ? result.add(value) : result[i] = value;
+        }
+        return result;
     },
-    reduce (f) {
-        return [
+    reduce (f, result) {
+        let i = 0;
+        for (const item of this)if (result === undefined) result = item;
+        else result = f(result, item, i++, this);
+        return result;
+    },
+    reduceRight (f, result) {
+        return Array.isArray(this) ? this.reduceRight(f, result) : [
             ...this
-        ].reduce(f);
+        ].reduceRight(f, result);
+    },
+    some (f) {
+        let i = 0;
+        for (const item of this){
+            if (f(item, i++, this)) return true;
+        }
+        return false;
     }
 };
 
-
-function $1d6902f2c8ca2182$export$acaf96a27438246b(...args) {
-    let base = this;
-    const set = !Array.isArray(base), result = new Set();
-    if (set) base = [
-        ...base
-    ];
-    for (const item of base)if (!args.some((arg, i)=>{
-        if (Array.isArray(arg)) arg = args[i] = new Set(arg);
-        return arg.has(item);
-    })) result.add(item);
-    return set ? result : [
-        ...result
-    ];
-}
-
-
+});
+parcelRequire.register("5ETxi", function(module, exports) {
 /* MIT License
-Copyright (c) 2023 Simon Y. Blackwell
+Copyright (c) 2023 Simon Y. Blackwell & 2019 Ophir LOJKINE
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -73,35 +144,84 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
- */ const $7d92985b693b5ee7$var$shortest = (args)=>{
-    const len = args.length;
-    let i = 0, j = 0, min = args[0].length;
-    for(; i < len; i++)if (args[i].length < min) {
-        min = args[i].length;
-        j = i;
-    }
-    return j;
-};
-function $7d92985b693b5ee7$export$bc86dfbf7795668c(...args) {
-    args = [
-        this,
-        ...args
-    ].map((arg)=>Array.isArray(arg) ? arg : [
-            ...arg
+ */ /// portions from http://phrogz.net/lazy-cartesian-product
+function $41ebc47611258f50$export$43a96c507d59f1a5(...collections) {
+    if (!(this instanceof $41ebc47611258f50$export$43a96c507d59f1a5)) return new $41ebc47611258f50$export$43a96c507d59f1a5(...collections);
+    collections = collections.map((item)=>Array.isArray(item) ? item : [
+            ...item
         ]);
-    const set = !Array.isArray(this), shortestIndex = $7d92985b693b5ee7$var$shortest(args), maxlen = args.length - 1;
-    let memory = new Set(args[shortestIndex]);
-    for(let i = 0; i <= maxlen; i++){
-        if (i === shortestIndex) continue;
-        const found = new Set();
-        for (const item of args[i])if (memory.has(item)) found.add(item);
-        if (found.size === 0) return [];
-        if (found.size < memory.size) memory = found;
-    }
-    return set ? memory : [
-        ...memory
+    for(var dm = [], f = 1, l, i = collections.length; i--; f *= l)dm[i] = [
+        f,
+        l = collections[i].length
+    ];
+    let started;
+    Object.defineProperty(this, "next", {
+        configurable: true,
+        writable: true,
+        value: function() {
+            if (!started) {
+                var p = [], max = collections.length - 1, lens = [], d = 0;
+                for(var i = collections.length; i--;)lens[i] = collections[i].length;
+                started = true;
+            }
+            while(p.length){
+                const a = collections[d], len = lens[d];
+                for(let i = 0; i < len; ++i)p[d] = a[i];
+                if (d === max) return {
+                    value: p
+                };
+                else d++;
+                p.pop();
+            }
+            started = false;
+            return {
+                done: true
+            };
+        }
+    });
+    Object.defineProperty(this, "at", {
+        configurable: true,
+        writable: true,
+        value: function(n) {
+            for(var c = [], i = collections.length; i--;)c[i] = collections[i][(n / dm[i][0] << 0) % dm[i][1]];
+            return c;
+        }
+    });
+    Object.defineProperty(this, [
+        Symbol.Iterator
+    ], {
+        configurable: true,
+        get () {
+            return this;
+        }
+    });
+    Object.defineProperty(this, "length", {
+        configurable: true,
+        get () {
+            return f;
+        }
+    });
+    return this;
+}
+
+const $41ebc47611258f50$var$loopFunctions = (await Promise.resolve((parcelRequire("3Zole")))).default;
+Object.entries($41ebc47611258f50$var$loopFunctions).forEach(([key, value])=>{
+    if (key !== "at") Object.defineProperty($41ebc47611258f50$export$43a96c507d59f1a5.prototype, "key", {
+        configurable: true,
+        writable: true,
+        value: value
+    });
+});
+function $41ebc47611258f50$export$c65d93cbdf0a1094(...collections) {
+    const cp = new $41ebc47611258f50$export$43a96c507d59f1a5(this, ...collections);
+    return this instanceof Set ? new Set([
+        ...cp
+    ]) : [
+        ...cp
     ];
 }
+
+});
 
 
 /* MIT License
@@ -125,21 +245,160 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
  */ 
-function $795045768c282dd9$export$4cd1b4d03646b02c(...args) {
-    const set = !Array.isArray(this), result = new Set(), intersects = (0, $7d92985b693b5ee7$export$bc86dfbf7795668c).apply(set ? this : new Set(this), args);
-    [
-        this,
-        ...args
-    ].forEach((arg, i)=>{
-        if (!Array.isArray(arg)) arg = [
-            ...arg
+var $3Zole = parcelRequire("3Zole");
+/* Portions of algorithm taken from old version of https://github.com/lovasoa/fast_array_intersect under MIT license */ const $1d6902f2c8ca2182$var$create = (iterating)=>{
+    let i, j, base, nOthers, args, memory, diff;
+    return function() {
+        const set = this instanceof Set;
+        if (!args) {
+            args = [
+                ...arguments
+            ], base = set ? [
+                ...this
+            ] : this;
+            memory = new Set();
+            diff = new Set(), i = 0;
+            j = 0;
+        }
+        for(; i < base.length; i++){
+            const item = base[i];
+            if (!memory.has(item)) {
+                memory.add(item);
+                for(; j < args.length; j++){
+                    let arg = args[j];
+                    if (!(arg instanceof Set)) arg = args[j] = new Set(arg);
+                    if (arg.has(item)) break;
+                }
+                if (j === args.length) {
+                    diff.add(item);
+                    if (iterating) return {
+                        value: item
+                    };
+                }
+            }
+            j = 0;
+        }
+        args = null;
+        return iterating ? {
+            done: true
+        } : set ? diff : [
+            ...diff
         ];
-        for (const item of arg)if (!intersects.has(item)) result.add(item);
-    });
-    return set ? result : [
-        ...result
-    ];
+    };
+};
+function $1d6902f2c8ca2182$var$iterable(...args) {
+    const difference = $1d6902f2c8ca2182$var$create(true), set = this instanceof Set;
+    let started;
+    return {
+        next () {
+            if (started) return difference();
+            started = true;
+            return difference(...args);
+        },
+        [Symbol.iterator] () {
+            started = false;
+            return this;
+        },
+        ...(0, $3Zole.loopFunctions)
+    };
 }
+const $1d6902f2c8ca2182$export$acaf96a27438246b = $1d6902f2c8ca2182$var$create();
+Object.defineProperty($1d6902f2c8ca2182$export$acaf96a27438246b, "iterable", {
+    get () {
+        return $1d6902f2c8ca2182$var$iterable.bind(this);
+    }
+});
+
+
+/* MIT License
+Copyright (c) 2023 Simon Y. Blackwell & 2019 Ophir LOJKINE
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+ */ 
+var $3Zole = parcelRequire("3Zole");
+/* Portions of algorithm taken from old version of https://github.com/lovasoa/fast_array_intersect under MIT license */ const $7d92985b693b5ee7$var$create = (iterating)=>{
+    let i, j, len, nOthers, args, result, memory;
+    return function() {
+        const set = this instanceof Set;
+        if (!args) {
+            args = [].sort.call([
+                this,
+                ...arguments
+            ], (a, b)=>a.length - b.length);
+            nOthers = args.length - 1;
+            result = [];
+            memory = new Map();
+            i = 0;
+            j = 0;
+        }
+        for(; i <= nOthers; i++){
+            let array = args[i];
+            if (!Array.isArray(array)) args[i] = array = [
+                ...array
+            ];
+            const len = array.length;
+            while(j < len){
+                const elem = array[j];
+                if (memory.get(elem) === i - 1) {
+                    if (i === nOthers) {
+                        result[result.length] = elem;
+                        memory.set(elem, 0);
+                        if (iterating) {
+                            j++;
+                            return {
+                                value: elem
+                            };
+                        }
+                    } else memory.set(elem, i);
+                } else if (i === 0) memory.set(elem, 0);
+                j++;
+            }
+            j = 0;
+        }
+        args = null;
+        return iterating ? {
+            done: true
+        } : set ? new Set(result) : result;
+    };
+};
+function $7d92985b693b5ee7$var$iterable(...args) {
+    const intersect = $7d92985b693b5ee7$var$create(true), set = this instanceof Set;
+    let started;
+    return {
+        next () {
+            if (started) return intersect();
+            started = true;
+            return intersect(...args);
+        },
+        [Symbol.iterator] () {
+            started = false;
+            return this;
+        },
+        ...(0, $3Zole.loopFunctions)
+    };
+}
+const $7d92985b693b5ee7$export$bc86dfbf7795668c = $7d92985b693b5ee7$var$create();
+Object.defineProperty($7d92985b693b5ee7$export$bc86dfbf7795668c, "iterable", {
+    get () {
+        return $7d92985b693b5ee7$var$iterable.bind(this);
+    }
+});
 
 
 /* MIT License
@@ -162,133 +421,185 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
- */ function $4e80d28291a67501$export$971dd5b0dfd021b6(...iterables) {
-    iterables = [
-        this,
-        ...iterables
-    ];
-    const set = !Array.isArray(this), memory = new Set(), results = [], target = set ? memory : results;
-    let i = 0, k = 0, length;
-    Object.defineProperty(target, "forEach", {
-        value: (f)=>{
-            let i = 0; // avoid accessing length
-            for (const item of proxy)f(item, i++, proxy);
+ */ 
+
+var $3Zole = parcelRequire("3Zole");
+/* Portions of algorithm taken from old version of https://github.com/lovasoa/fast_array_intersect under MIT license */ const $795045768c282dd9$var$create = (iterating)=>{
+    let i, j, k, arrays, sets, memory, diff;
+    return function() {
+        const set = this instanceof Set;
+        if (!arrays) {
+            arrays = [
+                this,
+                ...arguments
+            ].map((item)=>item instanceof Set ? [
+                    ...item
+                ] : item), sets = [
+                this,
+                ...arguments
+            ].map((item)=>item instanceof Set ? item : new Set(item)), memory = new Set(), diff = new Set(), i = 0;
+            j = 0;
+            k = 0;
         }
-    });
-    Object.defineProperty(target, "map", {
-        value: (f)=>{
-            const result = [];
-            let i = 0; // avoid accessing length
-            for (const item of proxy)result[i] = f(item, i++, proxy);
-            return set ? new Set(result) : result;
-        }
-    });
-    Object.defineProperty(target, "reduce", {
-        value: (f, result)=>{
-            let i = 0; // avoid accessing length
-            for (const item of proxy)if (result === undefined) result = item;
-            else result = f(result, item, i++, proxy);
-            return result;
-        }
-    });
-    const proxy = new Proxy(target, {
-        get (target, key) {
-            const type = typeof key;
-            let item = target[key];
-            if (key !== "length" && key !== "size" && type !== "symbol") {
-                if (item != undefined) {
-                    if (typeof item === "function" && ![
-                        "forEach",
-                        "map",
-                        "reduce"
-                    ].includes(key)) return item.bind(target);
-                    return item;
-                }
-                if (type === "string") {
-                    const num = parseInt(key);
-                    if (num + "" === key) key = num;
-                }
-                if (key < 0 || key === Infinity) throw new RangeError(`${key} is out of range`);
-            }
-            if (key === "length" || key === "size") {
-                if (length >= 0) return length;
-                key = Infinity;
-            }
-            if (typeof key === "number") {
-                if (key >= length) return;
-                if (key < results.length) return results[key];
-                const il = iterables.length;
-                let item;
-                while(k < il){
-                    let array = iterables[k];
-                    if (!Array.isArray(array)) array = [
-                        ...array
-                    ];
-                    const al = array.length;
-                    while(key >= results.length && i < al){
-                        item = array[i++];
-                        if (!memory.has(item)) {
-                            memory.add(item);
-                            results[results.length] = item;
-                        }
+        for(; i < arrays.length; i++){
+            const array = arrays[i];
+            for(; j < array.length; j++){
+                const item = array[j];
+                if (!memory.has(item)) {
+                    memory.add(item);
+                    for(; k < sets.length; k++){
+                        if (k === i) continue;
+                        if (sets[k].has(item)) break;
                     }
-                    if (i === al) {
-                        i = 0;
-                        k++;
-                    }
-                    if (key <= results.length) break;
-                }
-                if (k === il) length = results.length;
-                return key === Infinity ? length : item;
-            }
-            if (type === "symbol" && key.toString() === "Symbol(Symbol.iterator)") return ()=>{
-                if (length >= 0) {
-                    let l = 0;
-                    return {
-                        next () {
-                            while(l < results.length)return {
-                                value: results[l++]
-                            };
+                    if (k === sets.length) {
+                        diff.add(item);
+                        if (iterating) {
+                            k = 0;
                             return {
-                                done: true
+                                value: item
                             };
                         }
+                        k = 0;
+                    }
+                }
+            }
+            j = 0;
+        }
+        arrays = null;
+        return iterating ? {
+            done: true
+        } : set ? diff : [
+            ...diff
+        ];
+    };
+};
+function $795045768c282dd9$var$iterable(...args) {
+    const symmetricDifference = $795045768c282dd9$var$create(true), set = this instanceof Set;
+    let started;
+    return {
+        next () {
+            if (started) return symmetricDifference();
+            started = true;
+            return symmetricDifference(...args);
+        },
+        [Symbol.iterator] () {
+            started = false;
+            return this;
+        },
+        ...(0, $3Zole.loopFunctions)
+    };
+}
+const $795045768c282dd9$export$4cd1b4d03646b02c = $795045768c282dd9$var$create();
+Object.defineProperty($795045768c282dd9$export$4cd1b4d03646b02c, "iterable", {
+    get () {
+        return $795045768c282dd9$var$iterable.bind(this);
+    }
+});
+
+
+/* MIT License
+Copyright (c) 2023 Simon Y. Blackwell
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+ */ /* MIT License
+Copyright (c) 2023 Simon Y. Blackwell & 2019 Ophir LOJKINE
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+ */ 
+var $3Zole = parcelRequire("3Zole");
+/* Portions of algorithm taken from old version of https://github.com/lovasoa/fast_array_intersect under MIT license */ const $4e80d28291a67501$var$create = (iterating)=>{
+    let i, j, nOthers, args, memory;
+    return function() {
+        const set = this instanceof Set;
+        if (!args) {
+            args = [
+                this,
+                ...arguments
+            ];
+            nOthers = args.length - 1;
+            memory = new Set();
+            i = 0;
+            j = 0;
+        }
+        for(; i <= nOthers; i++){
+            let array = args[i];
+            if (!Array.isArray(array)) args[i] = array = [
+                ...array
+            ];
+            const len = array.length;
+            while(j < len){
+                const elem = array[j++];
+                if (!memory.has(elem)) {
+                    memory.add(elem);
+                    if (iterating) return {
+                        value: elem
                     };
                 }
-                return {
-                    next () {
-                        while(k < iterables.length){
-                            let array = iterables[k];
-                            if (!Array.isArray(array)) array = [
-                                ...array
-                            ];
-                            while(i < array.length){
-                                const item = array[i++];
-                                if (!memory.has(item)) {
-                                    memory.add(item);
-                                    results[results.length] = item;
-                                    return {
-                                        value: item
-                                    };
-                                }
-                            }
-                            if (i === array.length) {
-                                i = 0;
-                                k++;
-                            }
-                        }
-                        length = results.length;
-                        return {
-                            done: true
-                        };
-                    }
-                };
-            };
-            return target[key];
+            }
+            j = 0;
         }
-    });
-    return proxy;
+        args = null;
+        return iterating ? {
+            done: true
+        } : set ? memory : [
+            ...memory
+        ];
+    };
+};
+function $4e80d28291a67501$var$iterable(...args) {
+    const union = $4e80d28291a67501$var$create(true), set = this instanceof Set;
+    let started;
+    return {
+        next () {
+            if (started) return union();
+            started = true;
+            return union(...args);
+        },
+        [Symbol.iterator] () {
+            started = false;
+            return this;
+        },
+        ...(0, $3Zole.loopFunctions)
+    };
 }
+const $4e80d28291a67501$export$971dd5b0dfd021b6 = $4e80d28291a67501$var$create();
+Object.defineProperty($4e80d28291a67501$export$971dd5b0dfd021b6, "iterable", {
+    get () {
+        return $4e80d28291a67501$var$iterable.bind(this);
+    }
+});
 
 
 /* MIT License
@@ -312,14 +623,9 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
  */ function $eacc4266f55dc114$export$3b086d46cb5f10ec(...args) {
-    let base = this;
-    if (!Array.isArray(base)) base = [
-        ...base
-    ];
-    for (const item of base){
+    for (const item of this){
         if (args.some((arg, i)=>{
-            if (Array.isArray(arg)) arg = args[i] = new Set(arg);
-            return arg.has(item);
+            return Array.isArray(arg) ? arg.includes(item) : arg.has(item);
         })) return false;
     }
     return true;
@@ -349,15 +655,11 @@ SOFTWARE.
  */ function $20098100dd9d9520$export$22c04563e192ea02(...args) {
     let base = this;
     if (Array.isArray(base)) base = new Set(base);
-    args = args.map((arg)=>{
-        return Array.isArray(arg) ? [
-            ...new Set(arg)
-        ] : arg;
-    });
-    for (const array of args){
-        if (array.length > base.size) return false;
-        for (const item of array){
-            if (!base.has(item)) return false;
+    for (let set of args){
+        if (set instanceof Set && set.size > base.size) return false;
+        for (const item of set){
+            if (base.has(item)) continue;
+            return false;
         }
     }
     return true;
@@ -386,21 +688,21 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
  */ function $4651de7ca80cac86$export$2b09cdc61b8a3240(...args) {
     let base = this;
-    if (Array.isArray(base)) base = [
-        ...new Set(base)
-    ];
-    args = args.map((arg)=>{
-        return Array.isArray(arg) ? new Set(arg) : arg;
-    });
-    for (const set of args){
-        if (set.size < base.length) return false;
-        for (const item of base){
-            if (!set.has(item)) return false;
+    if (Array.isArray(base)) base = new Set(base);
+    for (let set of args){
+        if (set instanceof Set) {
+            if (set.size < base.size) return false;
+            for (const item of base){
+                if (set.has(item)) continue;
+                return false;
+            }
+        } else for (const item of base){
+            if (set.includes(item)) continue;
+            return false;
         }
     }
     return true;
 }
-
 
 
 const $cf838c15c8b009ba$export$61c7cc1fdf4f602b = {
@@ -414,5 +716,5 @@ const $cf838c15c8b009ba$export$61c7cc1fdf4f602b = {
 };
 
 
-export {$cf838c15c8b009ba$export$61c7cc1fdf4f602b as classPrototype, $cf838c15c8b009ba$export$61c7cc1fdf4f602b as default, $2e79f34cf327f706$export$a42bef84e41fffbb as loopFunctions};
+export {$cf838c15c8b009ba$export$61c7cc1fdf4f602b as classPrototype, $cf838c15c8b009ba$export$61c7cc1fdf4f602b as default};
 //# sourceMappingURL=index.js.map

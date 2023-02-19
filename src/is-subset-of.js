@@ -22,14 +22,19 @@ SOFTWARE.
 
 function isSubsetOf(...args) {
     let base = this;
-    if(Array.isArray(base)) base = [...new Set(base)];
-    args = args.map((arg) => {
-        return Array.isArray(arg) ? new Set(arg) : arg
-    });
-    for(const set of args) {
-        if(set.size<base.length) return false;
-        for(const item of base) {
-            if(!set.has(item)) return false;
+    if(Array.isArray(base)) base = new Set(base);
+    for(let set of args) {
+        if(set instanceof Set) {
+            if(set.size<base.size) return false;
+            for(const item of base) {
+                if(set.has(item)) continue;
+                return false;
+            }
+        } else {
+            for(const item of base) {
+                if(set.includes(item)) continue;
+                return false;
+            }
         }
     }
     return true;
