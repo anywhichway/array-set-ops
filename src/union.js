@@ -43,6 +43,7 @@ SOFTWARE.
  */
 
 import {loopFunctions} from "./loop-functions.js";
+import difference from "./difference.js";
 
 /* Portions of algorithm taken from old version of https://github.com/lovasoa/fast_array_intersect under MIT license */
 const create = (iterating) => {
@@ -77,7 +78,7 @@ const create = (iterating) => {
 }
 function iterable(...args) {
     const union = create(true),
-        set = this instanceof Set;
+        ctx = this;
     let started;
     return {
         next() {
@@ -85,7 +86,7 @@ function iterable(...args) {
                 return union();
             }
             started = true;
-            return union(...args);
+            return union.call(ctx,...args);
         },
         [Symbol.iterator]() {
             started = false;
@@ -96,9 +97,7 @@ function iterable(...args) {
 }
 
 const union = create();
-Object.defineProperty(union,"iterable",{get() {
-        return iterable.bind(this);
-    }});
+union.iterable = iterable;
 
 
 export {union,union as default};

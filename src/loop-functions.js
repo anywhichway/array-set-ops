@@ -1,4 +1,3 @@
-import CartesianProduct from "./cartesian-product.js";
 const loopFunctions = {
     at(index) {
         if(index>=0) {

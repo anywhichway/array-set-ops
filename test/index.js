@@ -1,23 +1,35 @@
 
 const chai = await import("chai"),
     expect = chai.expect,
-    {classPrototype} = await import("../src/index.js"),
+    {classPrototype,difference,intersection,symmetricDifference,union} = await import("../src/index.js"),
     {loopFunctions} = await import("../src/loop-functions.js"),
     {aggregateFunctions} = await import("../src/aggregate-functions.js"),
     {cartesianProduct,CartesianProduct} = await import("../src/cartesian-product.js");
 
-Object.assign(Set.prototype,classPrototype);
+classPrototype.patch(Set);
 Object.assign(Set.prototype,loopFunctions);
 Object.assign(Set.prototype,aggregateFunctions);
 Set.prototype.cartesianProduct = cartesianProduct;
-Object.assign(Array.prototype,classPrototype);
+classPrototype.patch(Array);
 Object.assign(Array.prototype,aggregateFunctions);
 Array.prototype.cartesianProduct = cartesianProduct;
 
 describe("Cartesian",() => {
-    it("product",() => {
-        const product = CartesianProduct([1,2],[2,1]);
+    xit("cartesianProduct",() => {
+        const product = [1,2].cartesianProduct([2,1]);
         expect(product.length).to.equal(4);
+        expect(product.at(0)[0]).to.equal(1);
+        expect(product.at(0)[1]).to.equal(2);
+        expect(product.at(1)[0]).to.equal(1);
+        expect(product.at(1)[1]).to.equal(1);
+        expect(product.at(2)[0]).to.equal(2);
+        expect(product.at(2)[1]).to.equal(2);
+        expect(product.at(3)[0]).to.equal(2);
+        expect(product.at(3)[1]).to.equal(1);
+    });
+    it("CartesianProduct",() => {
+        const product = CartesianProduct([1,2],[2,1]);
+        expect(product.size).to.equal(4);
         expect(product.at(0)[0]).to.equal(1);
         expect(product.at(0)[1]).to.equal(2);
         expect(product.at(1)[0]).to.equal(1);
@@ -36,7 +48,7 @@ describe("Cartesian",() => {
                 expect(item[1]).to.equal(2);
             } else if(i===1) {
                 expect(item[0]).to.equal(1);
-                expect(item[1]).to.equal(2);
+                expect(item[1]).to.equal(1);
             } else if(i===2) {
                 expect(item[0]).to.equal(2);
                 expect(item[1]).to.equal(2);
@@ -51,13 +63,38 @@ describe("Cartesian",() => {
 
 describe("Array",() => {
     it("intersection",() => {
+        const result = intersection([1,2,3,4],[2,4]);
+        expect(result.length).to.equal(2);
+        expect(result[0]).to.equal(2);
+        expect(result[1]).to.equal(4);
+    })
+    it("class intersection",() => {
         const array = new Array(1,2,3,4),
             result = array.intersection([2,4]);
         expect(result.length).to.equal(2);
         expect(result[0]).to.equal(2);
         expect(result[1]).to.equal(4);
     })
+    it("intersection.iterable",() => {
+        const array = new Array(1,2,3,4),
+            result = array.intersection.iterable([2,4]);
+        let i = 0;
+        for(const item of result) {
+            if(i===0) expect(item).to.equal(2);
+            if(i===1) expect(item).to.equal(4);
+            i++;
+        }
+        expect(i).to.equal(2);
+    })
     it("union",() => {
+        const result = union([1,2,4],[3,4]);
+        expect(result.length).to.equal(4);
+        expect(result[0]).to.equal(1);
+        expect(result[1]).to.equal(2);
+        expect(result[2]).to.equal(4);
+        expect(result[3]).to.equal(3);
+    })
+    it("class union",() => {
         const array = new Array(1,2,4),
             result = array.union([3,4]);
         expect(result.length).to.equal(4);
@@ -65,6 +102,19 @@ describe("Array",() => {
         expect(result[1]).to.equal(2);
         expect(result[2]).to.equal(4);
         expect(result[3]).to.equal(3);
+    })
+    it("union.iterable",() => {
+        const array = new Array(1,2,4),
+            result = array.union.iterable([3,4]);
+        let i = 0;
+        for(const item of result) {
+            if(i===0) expect(item).to.equal(1);
+            if(i===1) expect(item).to.equal(2);
+            if(i===2) expect(item).to.equal(4);
+            if(i===3) expect(item).to.equal(3);
+            i++;
+        }
+        expect(i).to.equal(4);
     })
     it("union - spread",() => {
         const array = new Array(1,2,4),
@@ -85,13 +135,37 @@ describe("Array",() => {
         expect(i).to.equal(4);
     })
     it("difference",() => {
+        const result = difference([1,2,4],[3,4]);
+        expect(result.length).to.equal(2);
+        expect(result[0]).to.equal(1);
+        expect(result[1]).to.equal(2);
+    })
+    it("class difference",() => {
         const array = new Array(1,2,4),
             result = array.difference([3,4]);
         expect(result.length).to.equal(2);
         expect(result[0]).to.equal(1);
         expect(result[1]).to.equal(2);
     })
+    it("difference.iterable",() => {
+        const array = new Array(1,2,4),
+            result = array.difference.iterable([3,4]);
+        let i = 0;
+        for(const item of result) {
+            if(i===0) expect(item).to.equal(1);
+            if(i===1) expect(item).to.equal(2);
+            i++;
+        }
+        expect(i).to.equal(2);
+    })
     it("symmetricDifference",() => {
+        const result = symmetricDifference([1,2,4],[3,4]);
+        expect(result.length).to.equal(3);
+        expect(result[0]).to.equal(1);
+        expect(result[1]).to.equal(2);
+        expect(result[2]).to.equal(3);
+    })
+    it("class symmetricDifference",() => {
         const array = new Array(1,2,4),
             result = array.symmetricDifference([3,4]);
         expect(result.length).to.equal(3);

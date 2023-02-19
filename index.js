@@ -1,55 +1,24 @@
-function $parcel$defineInteropFlag(a) {
-  Object.defineProperty(a, '__esModule', {value: true, configurable: true});
-}
-function $parcel$export(e, n, v, s) {
-  Object.defineProperty(e, n, {get: v, set: s, enumerable: true, configurable: true});
-}
-var $parcel$global =
-typeof globalThis !== 'undefined'
-  ? globalThis
-  : typeof self !== 'undefined'
-  ? self
-  : typeof window !== 'undefined'
-  ? window
-  : typeof global !== 'undefined'
-  ? global
-  : {};
-var $parcel$modules = {};
-var $parcel$inits = {};
+/* MIT License
+Copyright (c) 2023 Simon Y. Blackwell
 
-var parcelRequire = $parcel$global["parcelRequired1f4"];
-if (parcelRequire == null) {
-  parcelRequire = function(id) {
-    if (id in $parcel$modules) {
-      return $parcel$modules[id].exports;
-    }
-    if (id in $parcel$inits) {
-      var init = $parcel$inits[id];
-      delete $parcel$inits[id];
-      var module = {id: id, exports: {}};
-      $parcel$modules[id] = module;
-      init.call(module.exports, module, module.exports);
-      return module.exports;
-    }
-    var err = new Error("Cannot find module '" + id + "'");
-    err.code = 'MODULE_NOT_FOUND';
-    throw err;
-  };
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
 
-  parcelRequire.register = function register(id, init) {
-    $parcel$inits[id] = init;
-  };
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
 
-  $parcel$global["parcelRequired1f4"] = parcelRequire;
-}
-parcelRequire.register("3Zole", function(module, exports) {
-
-$parcel$defineInteropFlag(module.exports);
-
-$parcel$export(module.exports, "loopFunctions", () => $2e79f34cf327f706$export$a42bef84e41fffbb);
-$parcel$export(module.exports, "default", () => $2e79f34cf327f706$export$a42bef84e41fffbb);
-parcelRequire("5ETxi");
-const $2e79f34cf327f706$export$a42bef84e41fffbb = {
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+ */ const $2e79f34cf327f706$export$a42bef84e41fffbb = {
     at (index) {
         if (index >= 0) {
             let i = 0;
@@ -122,193 +91,6 @@ const $2e79f34cf327f706$export$a42bef84e41fffbb = {
     }
 };
 
-});
-parcelRequire.register("5ETxi", function(module, exports) {
-/* MIT License
-Copyright (c) 2023 Simon Y. Blackwell & 2019 Ophir LOJKINE
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
- */ /// portions from http://phrogz.net/lazy-cartesian-product
-function $41ebc47611258f50$export$43a96c507d59f1a5(...collections) {
-    if (!(this instanceof $41ebc47611258f50$export$43a96c507d59f1a5)) return new $41ebc47611258f50$export$43a96c507d59f1a5(...collections);
-    collections = collections.map((item)=>Array.isArray(item) ? item : [
-            ...item
-        ]);
-    for(var dm = [], f = 1, l, i = collections.length; i--; f *= l)dm[i] = [
-        f,
-        l = collections[i].length
-    ];
-    let started;
-    Object.defineProperty(this, "next", {
-        configurable: true,
-        writable: true,
-        value: function() {
-            if (!started) {
-                var p = [], max = collections.length - 1, lens = [], d = 0;
-                for(var i = collections.length; i--;)lens[i] = collections[i].length;
-                started = true;
-            }
-            while(p.length){
-                const a = collections[d], len = lens[d];
-                for(let i = 0; i < len; ++i)p[d] = a[i];
-                if (d === max) return {
-                    value: p
-                };
-                else d++;
-                p.pop();
-            }
-            started = false;
-            return {
-                done: true
-            };
-        }
-    });
-    Object.defineProperty(this, "at", {
-        configurable: true,
-        writable: true,
-        value: function(n) {
-            for(var c = [], i = collections.length; i--;)c[i] = collections[i][(n / dm[i][0] << 0) % dm[i][1]];
-            return c;
-        }
-    });
-    Object.defineProperty(this, [
-        Symbol.Iterator
-    ], {
-        configurable: true,
-        get () {
-            return this;
-        }
-    });
-    Object.defineProperty(this, "length", {
-        configurable: true,
-        get () {
-            return f;
-        }
-    });
-    return this;
-}
-
-const $41ebc47611258f50$var$loopFunctions = (await Promise.resolve((parcelRequire("3Zole")))).default;
-Object.entries($41ebc47611258f50$var$loopFunctions).forEach(([key, value])=>{
-    if (key !== "at") Object.defineProperty($41ebc47611258f50$export$43a96c507d59f1a5.prototype, "key", {
-        configurable: true,
-        writable: true,
-        value: value
-    });
-});
-function $41ebc47611258f50$export$c65d93cbdf0a1094(...collections) {
-    const cp = new $41ebc47611258f50$export$43a96c507d59f1a5(this, ...collections);
-    return this instanceof Set ? new Set([
-        ...cp
-    ]) : [
-        ...cp
-    ];
-}
-
-});
-
-
-/* MIT License
-Copyright (c) 2023 Simon Y. Blackwell
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
- */ 
-var $3Zole = parcelRequire("3Zole");
-/* Portions of algorithm taken from old version of https://github.com/lovasoa/fast_array_intersect under MIT license */ const $1d6902f2c8ca2182$var$create = (iterating)=>{
-    let i, j, base, nOthers, args, memory, diff;
-    return function() {
-        const set = this instanceof Set;
-        if (!args) {
-            args = [
-                ...arguments
-            ], base = set ? [
-                ...this
-            ] : this;
-            memory = new Set();
-            diff = new Set(), i = 0;
-            j = 0;
-        }
-        for(; i < base.length; i++){
-            const item = base[i];
-            if (!memory.has(item)) {
-                memory.add(item);
-                for(; j < args.length; j++){
-                    let arg = args[j];
-                    if (!(arg instanceof Set)) arg = args[j] = new Set(arg);
-                    if (arg.has(item)) break;
-                }
-                if (j === args.length) {
-                    diff.add(item);
-                    if (iterating) return {
-                        value: item
-                    };
-                }
-            }
-            j = 0;
-        }
-        args = null;
-        return iterating ? {
-            done: true
-        } : set ? diff : [
-            ...diff
-        ];
-    };
-};
-function $1d6902f2c8ca2182$var$iterable(...args) {
-    const difference = $1d6902f2c8ca2182$var$create(true), set = this instanceof Set;
-    let started;
-    return {
-        next () {
-            if (started) return difference();
-            started = true;
-            return difference(...args);
-        },
-        [Symbol.iterator] () {
-            started = false;
-            return this;
-        },
-        ...(0, $3Zole.loopFunctions)
-    };
-}
-const $1d6902f2c8ca2182$export$acaf96a27438246b = $1d6902f2c8ca2182$var$create();
-Object.defineProperty($1d6902f2c8ca2182$export$acaf96a27438246b, "iterable", {
-    get () {
-        return $1d6902f2c8ca2182$var$iterable.bind(this);
-    }
-});
-
 
 /* MIT License
 Copyright (c) 2023 Simon Y. Blackwell & 2019 Ophir LOJKINE
@@ -331,16 +113,15 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
  */ 
-var $3Zole = parcelRequire("3Zole");
 /* Portions of algorithm taken from old version of https://github.com/lovasoa/fast_array_intersect under MIT license */ const $7d92985b693b5ee7$var$create = (iterating)=>{
     let i, j, len, nOthers, args, result, memory;
     return function() {
         const set = this instanceof Set;
         if (!args) {
-            args = [].sort.call([
+            args = [
                 this,
                 ...arguments
-            ], (a, b)=>a.length - b.length);
+            ].sort((a, b)=>a.length - b.length);
             nOthers = args.length - 1;
             result = [];
             memory = new Map();
@@ -357,14 +138,13 @@ var $3Zole = parcelRequire("3Zole");
                 const elem = array[j];
                 if (memory.get(elem) === i - 1) {
                     if (i === nOthers) {
-                        result[result.length] = elem;
                         memory.set(elem, 0);
                         if (iterating) {
                             j++;
                             return {
                                 value: elem
                             };
-                        }
+                        } else result[result.length] = elem;
                     } else memory.set(elem, i);
                 } else if (i === 0) memory.set(elem, 0);
                 j++;
@@ -378,27 +158,84 @@ var $3Zole = parcelRequire("3Zole");
     };
 };
 function $7d92985b693b5ee7$var$iterable(...args) {
-    const intersect = $7d92985b693b5ee7$var$create(true), set = this instanceof Set;
+    const intersect = $7d92985b693b5ee7$var$create(true), ctx = this;
     let started;
     return {
         next () {
             if (started) return intersect();
             started = true;
-            return intersect(...args);
+            return intersect.call(ctx, ...args);
         },
         [Symbol.iterator] () {
             started = false;
             return this;
         },
-        ...(0, $3Zole.loopFunctions)
+        ...(0, $2e79f34cf327f706$export$a42bef84e41fffbb)
     };
 }
 const $7d92985b693b5ee7$export$bc86dfbf7795668c = $7d92985b693b5ee7$var$create();
-Object.defineProperty($7d92985b693b5ee7$export$bc86dfbf7795668c, "iterable", {
-    get () {
-        return $7d92985b693b5ee7$var$iterable.bind(this);
-    }
-});
+$7d92985b693b5ee7$export$bc86dfbf7795668c.iterable = $7d92985b693b5ee7$var$iterable;
+
+
+/* Portions of algorithm taken from old version of https://github.com/lovasoa/fast_array_intersect under MIT license */ const $1d6902f2c8ca2182$var$create = (iterating)=>{
+    let i, j, base, nOthers, args, memory, seen, diff;
+    return function() {
+        const set = this instanceof Set;
+        if (!args) {
+            args = [
+                ...arguments
+            ], base = set ? [
+                ...this
+            ] : this;
+            diff = new Set();
+            i = 0;
+            j = 0;
+        }
+        for(; i < base.length; i++){
+            let item = base[i];
+            for(; j < args.length; j++){
+                const arg = args[j];
+                if (Array.isArray(arg) ? arg.includes(item) : arg.has(item)) break;
+            }
+            if (j === args.length) {
+                if (iterating) {
+                    i++;
+                    j = 0;
+                    return {
+                        value: item
+                    };
+                }
+                diff.add(item);
+            }
+            j = 0;
+        }
+        args = null;
+        return iterating ? {
+            done: true
+        } : set ? diff : [
+            ...diff
+        ];
+    };
+};
+function $1d6902f2c8ca2182$var$iterable(...args) {
+    const difference = $1d6902f2c8ca2182$var$create(true), ctx = this;
+    let started;
+    return {
+        next () {
+            if (started) return difference();
+            started = true;
+            return difference.call(ctx, ...args);
+        },
+        [Symbol.iterator] () {
+            started = false;
+            return this;
+        },
+        ...(0, $2e79f34cf327f706$export$a42bef84e41fffbb)
+    };
+}
+const $1d6902f2c8ca2182$export$acaf96a27438246b = $1d6902f2c8ca2182$var$create();
+$1d6902f2c8ca2182$export$acaf96a27438246b.iterable = $1d6902f2c8ca2182$var$iterable;
+
 
 
 /* MIT License
@@ -423,7 +260,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
  */ 
 
-var $3Zole = parcelRequire("3Zole");
+
 /* Portions of algorithm taken from old version of https://github.com/lovasoa/fast_array_intersect under MIT license */ const $795045768c282dd9$var$create = (iterating)=>{
     let i, j, k, arrays, sets, memory, diff;
     return function() {
@@ -474,27 +311,23 @@ var $3Zole = parcelRequire("3Zole");
     };
 };
 function $795045768c282dd9$var$iterable(...args) {
-    const symmetricDifference = $795045768c282dd9$var$create(true), set = this instanceof Set;
+    const symmetricDifference = $795045768c282dd9$var$create(true), ctx = this;
     let started;
     return {
         next () {
             if (started) return symmetricDifference();
             started = true;
-            return symmetricDifference(...args);
+            return symmetricDifference.call(ctx, ...args);
         },
         [Symbol.iterator] () {
             started = false;
             return this;
         },
-        ...(0, $3Zole.loopFunctions)
+        ...(0, $2e79f34cf327f706$export$a42bef84e41fffbb)
     };
 }
 const $795045768c282dd9$export$4cd1b4d03646b02c = $795045768c282dd9$var$create();
-Object.defineProperty($795045768c282dd9$export$4cd1b4d03646b02c, "iterable", {
-    get () {
-        return $795045768c282dd9$var$iterable.bind(this);
-    }
-});
+$795045768c282dd9$export$4cd1b4d03646b02c.iterable = $795045768c282dd9$var$iterable;
 
 
 /* MIT License
@@ -538,7 +371,7 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
  */ 
-var $3Zole = parcelRequire("3Zole");
+
 /* Portions of algorithm taken from old version of https://github.com/lovasoa/fast_array_intersect under MIT license */ const $4e80d28291a67501$var$create = (iterating)=>{
     let i, j, nOthers, args, memory;
     return function() {
@@ -579,27 +412,23 @@ var $3Zole = parcelRequire("3Zole");
     };
 };
 function $4e80d28291a67501$var$iterable(...args) {
-    const union = $4e80d28291a67501$var$create(true), set = this instanceof Set;
+    const union = $4e80d28291a67501$var$create(true), ctx = this;
     let started;
     return {
         next () {
             if (started) return union();
             started = true;
-            return union(...args);
+            return union.call(ctx, ...args);
         },
         [Symbol.iterator] () {
             started = false;
             return this;
         },
-        ...(0, $3Zole.loopFunctions)
+        ...(0, $2e79f34cf327f706$export$a42bef84e41fffbb)
     };
 }
 const $4e80d28291a67501$export$971dd5b0dfd021b6 = $4e80d28291a67501$var$create();
-Object.defineProperty($4e80d28291a67501$export$971dd5b0dfd021b6, "iterable", {
-    get () {
-        return $4e80d28291a67501$var$iterable.bind(this);
-    }
-});
+$4e80d28291a67501$export$971dd5b0dfd021b6.iterable = $4e80d28291a67501$var$iterable;
 
 
 /* MIT License
@@ -706,15 +535,38 @@ SOFTWARE.
 
 
 const $cf838c15c8b009ba$export$61c7cc1fdf4f602b = {
-    difference: $1d6902f2c8ca2182$export$acaf96a27438246b,
-    intersection: $7d92985b693b5ee7$export$bc86dfbf7795668c,
-    symmetricDifference: $795045768c282dd9$export$4cd1b4d03646b02c,
-    union: $4e80d28291a67501$export$971dd5b0dfd021b6,
-    isSubsetOf: $4651de7ca80cac86$export$2b09cdc61b8a3240,
-    isSupersetOf: $20098100dd9d9520$export$22c04563e192ea02,
-    isDisjointFrom: $eacc4266f55dc114$export$3b086d46cb5f10ec
+    patch (cls) {
+        Object.entries({
+            difference: $1d6902f2c8ca2182$export$acaf96a27438246b,
+            intersection: $7d92985b693b5ee7$export$bc86dfbf7795668c,
+            symmetricDifference: $795045768c282dd9$export$4cd1b4d03646b02c,
+            union: $4e80d28291a67501$export$971dd5b0dfd021b6
+        }).forEach(([name, f])=>{
+            Object.defineProperty(cls.prototype, name, {
+                get () {
+                    const ctx = this;
+                    return new Proxy(f, {
+                        get (target, property) {
+                            const value = target[property];
+                            if (typeof value === "function") return value.bind(ctx);
+                            return value;
+                        }
+                    });
+                }
+            });
+        });
+        Object.assign(cls.prototype, {
+            isSubsetOf: $4651de7ca80cac86$export$2b09cdc61b8a3240,
+            isSupersetOf: $20098100dd9d9520$export$22c04563e192ea02,
+            isDisjointFrom: $eacc4266f55dc114$export$3b086d46cb5f10ec
+        });
+    }
 };
+const $cf838c15c8b009ba$export$acaf96a27438246b = (base, ...rest)=>(0, $1d6902f2c8ca2182$export$acaf96a27438246b).call(base, ...rest);
+const $cf838c15c8b009ba$export$bc86dfbf7795668c = (base, ...rest)=>(0, $7d92985b693b5ee7$export$bc86dfbf7795668c).call(base, ...rest);
+const $cf838c15c8b009ba$export$4cd1b4d03646b02c = (base, ...rest)=>(0, $795045768c282dd9$export$4cd1b4d03646b02c).call(base, ...rest);
+const $cf838c15c8b009ba$export$971dd5b0dfd021b6 = (base, ...rest)=>(0, $4e80d28291a67501$export$971dd5b0dfd021b6).call(base, ...rest);
 
 
-export {$cf838c15c8b009ba$export$61c7cc1fdf4f602b as classPrototype, $cf838c15c8b009ba$export$61c7cc1fdf4f602b as default};
+export {$cf838c15c8b009ba$export$61c7cc1fdf4f602b as classPrototype, $cf838c15c8b009ba$export$61c7cc1fdf4f602b as default, $cf838c15c8b009ba$export$acaf96a27438246b as difference, $cf838c15c8b009ba$export$bc86dfbf7795668c as intersection, $cf838c15c8b009ba$export$4cd1b4d03646b02c as symmetricDifference, $cf838c15c8b009ba$export$971dd5b0dfd021b6 as union};
 //# sourceMappingURL=index.js.map

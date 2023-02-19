@@ -21,44 +21,45 @@ SOFTWARE.
  */
 
 import {loopFunctions} from "./loop-functions.js";
+
+import intersection from "./intersection.js";
 /* Portions of algorithm taken from old version of https://github.com/lovasoa/fast_array_intersect under MIT license */
 const create = (iterating) => {
-    let i, j, base, nOthers, args, memory, diff;
-    return function() {
+    let i, j, base, nOthers, args, memory, seen, diff;
+    return function () {
         const set = this instanceof Set;
         if(!args) {
             args = [...arguments],
             base = set ? [...this] : this;
-            memory = new Set();
-            diff = new Set(),
+            diff = new Set();
             i = 0;
             j = 0;
         }
         for(;i<base.length;i++) {
-            const item = base[i];
-            if (!memory.has(item)) {
-                memory.add(item);
-                for (; j < args.length; j++) {
-                    let arg = args[j];
-                    if (!(arg instanceof Set)) arg = args[j] = new Set(arg);
-                    if (arg.has(item)) {
-                        break;
-                    }
+            let item = base[i];
+            for(;j<args.length;j++) {
+                const arg = args[j];
+                if(Array.isArray(arg) ? arg.includes(item) : arg.has(item)) {
+                    break
                 }
-                if (j === args.length) {
-                    diff.add(item);
-                    if(iterating) return {value: item}
+            }
+            if(j===args.length) {
+                if(iterating) {
+                    i++;
+                    j = 0;
+                    return {value: item};
                 }
+                diff.add(item);
             }
             j = 0;
         }
         args = null;
-        return iterating ? {done:true} : (set ? diff : [...diff]);
+        return iterating ? { done: true} : (set ? diff : [...diff]);
     }
 }
 function iterable(...args) {
     const difference = create(true),
-        set = this instanceof Set;
+        ctx = this;
     let started;
     return {
         next() {
@@ -66,7 +67,7 @@ function iterable(...args) {
                 return difference();
             }
             started = true;
-            return difference(...args);
+            return difference.call(ctx,...args);
         },
         [Symbol.iterator]() {
             started = false;
@@ -77,8 +78,7 @@ function iterable(...args) {
 }
 
 const difference = create();
-Object.defineProperty(difference,"iterable",{get() {
-        return iterable.bind(this);
-    }});
+difference.iterable = iterable;
+
 
 export {difference,difference as default}

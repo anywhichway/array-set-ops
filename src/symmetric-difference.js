@@ -45,6 +45,7 @@ SOFTWARE.
  */
 
 import {loopFunctions} from "./loop-functions.js";
+import difference from "./difference.js";
 /* Portions of algorithm taken from old version of https://github.com/lovasoa/fast_array_intersect under MIT license */
 const create = (iterating) => {
     let i, j, k, arrays,  sets, memory, diff;
@@ -87,7 +88,7 @@ const create = (iterating) => {
 }
 function iterable(...args) {
     const symmetricDifference = create(true),
-        set = this instanceof Set;
+        ctx = this;
     let started;
     return {
         next() {
@@ -95,7 +96,7 @@ function iterable(...args) {
                 return symmetricDifference();
             }
             started = true;
-            return symmetricDifference(...args);
+            return symmetricDifference.call(ctx,...args);
         },
         [Symbol.iterator]() {
             started = false;
@@ -106,8 +107,7 @@ function iterable(...args) {
 }
 
 const symmetricDifference = create();
-Object.defineProperty(symmetricDifference,"iterable",{get() {
-        return iterable.bind(this);
-    }});
+symmetricDifference.iterable = iterable;
+
 
 export {symmetricDifference,symmetricDifference as default}

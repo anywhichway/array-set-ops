@@ -104,7 +104,8 @@ import {loopFunctions} from "../src/loop-functions.js",
 import {aggregateFunctions} from "../src/aggregate-functions.js",
 import {cartesianProduct,CartesianProduct} from "../src/cartesian-product.js";
 
-Object.assign(Set.prototype,classPrototype);
+classPrototype.patch(Set);
+classPrototype.patch(Array);
 Object.assign(Set.prototype,loopFunctions);
 Object.assign(Set.prototype,aggregateFunctions); // optional
 Set.prototype.cartesianProduct = cartesianProduct; // optional
@@ -122,25 +123,28 @@ See the file `./test/index.js` for examples.
 Unit testing is conducted with Mocha and C8.
 
 ```
-------------------------|---------|----------|---------|---------|---------------------------------------------------------
-File                    | % Stmts | % Branch | % Funcs | % Lines | Uncovered Line #s                                       
-------------------------|---------|----------|---------|---------|---------------------------------------------------------
-All files               |   46.66 |     90.9 |       0 |   46.66 |                                                        
-cartesian-product.js    |   37.68 |       50 |       0 |   37.68 | 25-57,60-69                                            
-difference.js           |    36.9 |      100 |       0 |    36.9 | 26-77,81                                               
-index.js                |     100 |      100 |     100 |     100 |                                                        
-intersection.js         |   35.16 |      100 |       0 |   35.16 | 27-84,88                                               
-is-disjoint-from.js     |   70.58 |      100 |       0 |   70.58 | 23-32                                                  
-is-subset-of.js         |   55.81 |      100 |       0 |   55.81 | 23-41                                                  
-is-superset-of.js       |   66.66 |      100 |       0 |   66.66 | 23-34                                                  
-loop-functions.js       |   29.62 |      100 |       0 |   29.62 | 4-13,16-20,23-31,34-37,40-43,46-49,52-59,62-67,70,73-78
-symmetric-difference.js |   48.67 |      100 |       0 |   48.67 | 50-106,110                                             
-union.js                |   52.88 |      100 |       0 |   52.88 | 49-96,100                                              
-------------------------|---------|----------|---------|---------|---------------------------------------------------------
+-------------------------|---------|----------|---------|---------|---------------------------------------
+File                     | % Stmts | % Branch | % Funcs | % Lines | Uncovered Line #s                     
+-------------------------|---------|----------|---------|---------|---------------------------------------
+All files                |   87.51 |    88.96 |      70 |   87.51 |                                      
+ aggregate-functions.js  |   45.45 |      100 |       0 |   45.45 | 4-8,11,14-19                         
+ cartesian-product.js    |   93.75 |    93.75 |   83.33 |   93.75 | 59-62                                
+ difference.js           |     100 |    85.71 |     100 |     100 | 33,42,57                             
+ index.js                |   97.72 |       90 |     100 |   97.72 | 18                                   
+ intersection.js         |   97.77 |    96.15 |     100 |   97.77 | 54-55                                
+ is-disjoint-from.js     |     100 |    85.71 |     100 |     100 | 26                                   
+ is-subset-of.js         |   83.72 |    66.66 |     100 |   83.72 | 28-32,36-37                          
+ is-superset-of.js       |   94.44 |    57.14 |     100 |   94.44 | 30-31                                
+ loop-functions.js       |   51.25 |       80 |      30 |   51.25 | 3-12,15-19,22-30,33-36,39-42,69,72-77
+ symmetric-difference.js |   80.53 |    90.47 |      50 |   80.53 | 76-78,89-107                         
+ union.js                |     100 |      100 |     100 |     100 |                                      
+-------------------------|---------|----------|---------|---------|---------------------------------------
 ```
 
 
 # Change History (Reverse Chronological Order)
+
+2023002019 v0.3.0 More unit tests. Performance tests. Simplified patching of Array and Class. Fixed algorithmic issues with `difference`.
 
 2023-02-18 v0.2.0 More documentation, more unit tests, almost complete and standardized API.
 

@@ -28,7 +28,7 @@ import {loopFunctions} from "./loop-functions.js";
         return function() {
             const set = this instanceof Set;
             if(!args) {
-                args = [].sort.call([this,...arguments],(a,b) => a.length - b.length);
+                args = [this,...arguments].sort((a,b) => a.length - b.length);
                 nOthers = args.length - 1;
                 result = [];
                 memory = new Map();
@@ -43,11 +43,12 @@ import {loopFunctions} from "./loop-functions.js";
                     const elem = array[j];
                     if (memory.get(elem) === i - 1) {
                         if(i===nOthers) {
-                            result[result.length] = elem;
                             memory.set(elem,0);
                             if(iterating) {
                                 j++;
                                 return {value:elem}
+                            } else {
+                                result[result.length] = elem;
                             }
                         } else {
                             memory.set(elem,i)
@@ -65,7 +66,7 @@ import {loopFunctions} from "./loop-functions.js";
     }
 function iterable(...args) {
     const intersect = create(true),
-        set = this instanceof Set;
+        ctx = this;
     let started;
     return {
         next() {
@@ -73,7 +74,7 @@ function iterable(...args) {
                 return intersect();
             }
             started = true;
-            return intersect(...args);
+            return intersect.call(ctx,...args);
         },
         [Symbol.iterator]() {
             started = false;
@@ -84,8 +85,6 @@ function iterable(...args) {
 }
 
 const intersection = create();
-Object.defineProperty(intersection,"iterable",{get() {
-    return iterable.bind(this);
-}});
+intersection.iterable = iterable;
 
 export {intersection,intersection as default};

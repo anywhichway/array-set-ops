@@ -24,39 +24,34 @@ SOFTWARE.
 
 function CartesianProduct(...collections) {
     if(!(this instanceof CartesianProduct)) return new CartesianProduct(...collections);
+    const ctx = this;
     collections = collections.map((item) => Array.isArray(item) ? item : [...item]);
-    for (var dm=[],f=1,l,i=collections.length;i--;f*=l){ dm[i]=[f,l=collections[i].length] }
-    let started;
+    for (var dm=[],f=1,l,i=collections.length;i--;f*=l){ dm[i]=[f,l=collections[i].length] };
+    var n = 0;
     Object.defineProperty(this,"next",{configurable:true,writable:true,value:
         function() {
-            if(!started) {
-                var p=[],max=collections.length-1,lens=[], d = 0;
-                for (var i=collections.length;i--;) lens[i]=collections[i].length;
-                started = true;
+          while(n<f) {
+              for (var c=[],i=collections.length;i--;)c[i]=collections[i][(n/dm[i][0]<<0)%dm[i][1]];
+              n++;
+               return {value:c};
             }
-            while(p.length) {
-                const a=collections[d], len=lens[d];
-                for (let i=0;i<len;++i) p[d]=a[i];
-                if(d===max) {
-                    return {value: p}
-                } else {
-                    d++;
-                }
-                p.pop();
-            }
-            started = false;
-            return {done: true}
+            n = 0;
+            return {done: true};
         }});
         Object.defineProperty(this,"at",{configurable:true,writable:true,value:function(n) {
             for (var c=[],i=collections.length;i--;)c[i]=collections[i][(n/dm[i][0]<<0)%dm[i][1]];
             return c;
         }});
-        Object.defineProperty(this,[Symbol.Iterator],{configurable:true,get() { return this; }})
-        Object.defineProperty(this,"length",{configurable:true,get() { return f; }});
+        Object.assign(this,{
+            [Symbol.iterator]() {
+                return this;
+            }
+        });
+        Object.defineProperty(this,"size",{configurable:true,get() { return f; }});
         return this;
     }
 
-const loopFunctions = (await import("./loop-functions.js")).default;
+import loopFunctions from "./loop-functions.js";
 Object.entries(loopFunctions).forEach(([key,value]) => {
     if(key!=="at") Object.defineProperty(CartesianProduct.prototype,"key",{configurable:true,writable:true,value})
 })
