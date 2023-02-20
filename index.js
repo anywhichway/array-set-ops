@@ -82,6 +82,21 @@ SOFTWARE.
             ...this
         ].reduceRight(f, result);
     },
+    slice (start = 0, end) {
+        const set = this instanceof Set, memory = set ? new Set() : [], len = set ? this.size : this.length;
+        if (end === undefined) end = len;
+        end = Math.min(end, len);
+        if (end < 0) end = len - end;
+        let i = 0;
+        for (const item of this){
+            if (i >= start) {
+                if (i < end) set ? memory.add(item) : memory.push(item);
+                else break;
+            }
+            i++;
+        }
+        return memory;
+    },
     some (f) {
         let i = 0;
         for (const item of this){
@@ -90,6 +105,67 @@ SOFTWARE.
         return false;
     }
 };
+const $2e79f34cf327f706$var$filter = $2e79f34cf327f706$export$a42bef84e41fffbb.filter;
+Object.defineProperty($2e79f34cf327f706$export$a42bef84e41fffbb, "filter", {
+    configurable: true,
+    get () {
+        const ctx = this;
+        return new Proxy($2e79f34cf327f706$var$filter, {
+            get (target, key) {
+                if (key === "iterable") return function*(f) {
+                    let i = 0;
+                    for (const item of ctx)if (f(item, i++, ctx)) yield item;
+                };
+                return target[key];
+            }
+        });
+    }
+});
+const $2e79f34cf327f706$var$map = $2e79f34cf327f706$export$a42bef84e41fffbb.map;
+Object.defineProperty($2e79f34cf327f706$export$a42bef84e41fffbb, "map", {
+    configurable: true,
+    get () {
+        const ctx = this;
+        return new Proxy($2e79f34cf327f706$var$map, {
+            get (target, key) {
+                if (key === "map") return function*(f) {
+                    let i = 0;
+                    for (const item of ctx){
+                        const value = f(item, i++, this);
+                        yield value;
+                    }
+                };
+                return target[key];
+            }
+        });
+    }
+});
+const $2e79f34cf327f706$var$slice = $2e79f34cf327f706$export$a42bef84e41fffbb.slice;
+Object.defineProperty($2e79f34cf327f706$export$a42bef84e41fffbb, "slice", {
+    configurable: true,
+    get () {
+        const ctx = this;
+        return new Proxy($2e79f34cf327f706$var$slice, {
+            get (target, key) {
+                if (key === "slice") return function*(start = 0, end) {
+                    const set = ctx instanceof Set, len = set ? this.size : this.length;
+                    if (end === undefined) end = len;
+                    end = Math.min(end, len);
+                    if (end < 0) end = len - end;
+                    let i = 0;
+                    for (const item of ctx){
+                        if (i >= start) {
+                            if (i < end) yield item;
+                            else break;
+                        }
+                        i++;
+                    }
+                };
+                return target[key];
+            }
+        });
+    }
+});
 
 
 /* MIT License
@@ -566,7 +642,10 @@ const $cf838c15c8b009ba$export$acaf96a27438246b = (base, ...rest)=>(0, $1d6902f2
 const $cf838c15c8b009ba$export$bc86dfbf7795668c = (base, ...rest)=>(0, $7d92985b693b5ee7$export$bc86dfbf7795668c).call(base, ...rest);
 const $cf838c15c8b009ba$export$4cd1b4d03646b02c = (base, ...rest)=>(0, $795045768c282dd9$export$4cd1b4d03646b02c).call(base, ...rest);
 const $cf838c15c8b009ba$export$971dd5b0dfd021b6 = (base, ...rest)=>(0, $4e80d28291a67501$export$971dd5b0dfd021b6).call(base, ...rest);
+const $cf838c15c8b009ba$export$2b09cdc61b8a3240 = (base, ...rest)=>(0, $4651de7ca80cac86$export$2b09cdc61b8a3240).call(base, ...rest);
+const $cf838c15c8b009ba$export$22c04563e192ea02 = (base, ...rest)=>(0, $20098100dd9d9520$export$22c04563e192ea02).call(base, ...rest);
+const $cf838c15c8b009ba$export$3b086d46cb5f10ec = (base, ...rest)=>(0, $eacc4266f55dc114$export$3b086d46cb5f10ec).call(base, ...rest);
 
 
-export {$cf838c15c8b009ba$export$61c7cc1fdf4f602b as classPrototype, $cf838c15c8b009ba$export$61c7cc1fdf4f602b as default, $cf838c15c8b009ba$export$acaf96a27438246b as difference, $cf838c15c8b009ba$export$bc86dfbf7795668c as intersection, $cf838c15c8b009ba$export$4cd1b4d03646b02c as symmetricDifference, $cf838c15c8b009ba$export$971dd5b0dfd021b6 as union};
+export {$cf838c15c8b009ba$export$61c7cc1fdf4f602b as classPrototype, $cf838c15c8b009ba$export$61c7cc1fdf4f602b as default, $cf838c15c8b009ba$export$acaf96a27438246b as difference, $cf838c15c8b009ba$export$bc86dfbf7795668c as intersection, $cf838c15c8b009ba$export$4cd1b4d03646b02c as symmetricDifference, $cf838c15c8b009ba$export$971dd5b0dfd021b6 as union, $cf838c15c8b009ba$export$2b09cdc61b8a3240 as isSubsetOf, $cf838c15c8b009ba$export$22c04563e192ea02 as isSupersetOf, $cf838c15c8b009ba$export$3b086d46cb5f10ec as isDisjointFrom};
 //# sourceMappingURL=index.js.map

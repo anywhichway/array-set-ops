@@ -24,7 +24,6 @@ SOFTWARE.
 
 function CartesianProduct(...collections) {
     if(!(this instanceof CartesianProduct)) return new CartesianProduct(...collections);
-    const ctx = this;
     collections = collections.map((item) => Array.isArray(item) ? item : [...item]);
     for (var dm=[],f=1,l,i=collections.length;i--;f*=l){ dm[i]=[f,l=collections[i].length] };
     var n = 0;
@@ -47,13 +46,25 @@ function CartesianProduct(...collections) {
                 return this;
             }
         });
+        Object.defineProperty(this,"slice",{configurable:true,*value(start=0,end) {
+                    end ||= this.size;
+                    end = Math.min(end,this.size);
+                    if(end<0) {
+                        end = this.size - end;
+                    }
+                    while(start<end) {
+                        yield this.at(start);
+                        start++;
+                    }
+                }
+            });
         Object.defineProperty(this,"size",{configurable:true,get() { return f; }});
         return this;
     }
 
 import loopFunctions from "./loop-functions.js";
 Object.entries(loopFunctions).forEach(([key,value]) => {
-    if(key!=="at") Object.defineProperty(CartesianProduct.prototype,"key",{configurable:true,writable:true,value})
+    if(key!=="at" && key!=="slice") Object.defineProperty(CartesianProduct.prototype,key,{configurable:true,writable:true,value})
 })
 
 function cartesianProduct(...collections) {

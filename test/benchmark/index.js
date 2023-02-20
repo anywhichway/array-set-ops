@@ -48,11 +48,14 @@ const csuite = new Benchmark.Suite;
     //const result = arg1.cartesianProduct(arg2);
 //})
 const cp = CartesianProduct(arg1,arg2);
+function* generatorCartesian([head, ...tail]) {
+    const remainder = tail.length > 0 ? generatorCartesian(tail) : [[]];
+    for (let r of remainder) for (let h of head) yield [h, ...r];
+}
 
 gc();
 
-const cplen = cp.length;
-console.log(cplen);
+const cplen = cp.size;
  csuite.add("CartesianProduct first",() => {
        const result = cp;
        let i = 0;
@@ -63,7 +66,7 @@ console.log(cplen);
         expect(i).to.equal(1);
     })
      .add("bigCartesian first",() => {
-         const result = bigCartesian([arg1,arg2]);;
+         const result = bigCartesian([arg1,arg2]);
          let i = 0;
          for(const item of result) {
              i++;
@@ -71,25 +74,38 @@ console.log(cplen);
          }
          expect(i).to.equal(1);
      })
-    .add("CartesianProduct half way",() => {
-        const item = cp.at(cplen/2);
+     .add("generatorCartesian first",() => {
+         const result = generatorCartesian([arg1,arg2]);
+         let i = 0;
+         for(const item of result) {
+             i++;
+             break;
+         }
+         expect(i).to.equal(1);
+     })
+    .add(`CartesianProduct item at 10% point ${Math.round(cplen/10)}`,() => {
+        const item = cp.at(Math.round(cplen/10));
         expect(Array.isArray(item)).to.equal(true);
     })
-     .add("bigCartesian first",() => {
-         const result = bigCartesian([arg1,arg2]);;
-         let i = 0;
-         for(const item of result) {
-             i++;
-             break;
-         }
-         expect(i).to.equal(1);
-     })
-     .add("bigCartesian half way",() => {
+     .add(`bigCartesian item at 10% point ${Math.round(cplen/10)}`,() => {
+         const result = bigCartesian([arg1,arg2]);
          let i = 0;
          for(var item of result) {
-             if(i==cplen/2) {
+             if(i==Math.round(cplen/10)) {
                  break;
              }
+             i++;
+         }
+         expect(Array.isArray(item)).to.equal(true);
+     })
+     .add(`generatorCartesian item at 10% point ${Math.round(cplen/10)}`,() => {
+         const result = generatorCartesian([arg1,arg2]);
+         let i = 0;
+         for(var item of result) {
+             if(i==Math.round(cplen/10)) {
+                 break;
+             }
+             i++;
          }
          expect(Array.isArray(item)).to.equal(true);
      })
@@ -112,7 +128,7 @@ console.log(cplen);
         const result = fastCartesian([arg1,arg2]);
     })*/
     .on('cycle', function(event) {
-        console.log(String(event.target),size);
+        console.log(String(event.target),cplen);
         gc();
     })
     .on("complete",function() {

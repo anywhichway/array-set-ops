@@ -39,6 +39,16 @@ describe("Cartesian",() => {
         expect(product.at(3)[0]).to.equal(2);
         expect(product.at(3)[1]).to.equal(1);
     });
+    it("slice",() => {
+        const product = CartesianProduct([1,2],[2,1]);
+        expect(product.size).to.equal(4);
+        const section = [...product.slice(2,4)];
+        expect(section.length).to.equal(2);
+        expect(section[0][0]).to.equal(2);
+        expect(section[0][1]).to.equal(2);
+        expect(section[1][0]).to.equal(2);
+        expect(section[1][1]).to.equal(1);
+    });
     it("loop",() => {
         const product = CartesianProduct([1,2],[2,1]);
         let i = 0;

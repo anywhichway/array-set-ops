@@ -68,6 +68,27 @@ const loopFunctions = {
     reduceRight(f, result) {
         return Array.isArray(this) ? this.reduceRight(f,result) : [...this].reduceRight(f,result);
     },
+    slice(start=0,end) {
+        const set = this instanceof Set,
+            memory = set ? new Set() : [],
+            len = set ? this.size : this.length;
+        if(end===undefined) {
+            end = len;
+        }
+        end = Math.min(end,len);
+        if(end<0) {
+            end = len - end;
+        }
+        let i = 0;
+        for(const item of this) {
+            if(i>=start) {
+                if(i<end) set ? memory.add(item) : memory.push(item)
+                else break;
+            }
+            i++;
+        }
+        return memory;
+    },
     some(f) {
         let i = 0;
         for (const item of this) {
@@ -76,5 +97,76 @@ const loopFunctions = {
         return false;
     }
 }
+
+const filter = loopFunctions.filter;
+Object.defineProperty(loopFunctions,"filter",{configurable:true,get() {
+        const ctx = this;
+        return new Proxy(filter,{
+            get(target,key) {
+                if(key==="iterable") {
+                    return function*(f) {
+                        let i = 0;
+                        for (const item of ctx) {
+                            if(f(item, i++, ctx)) {
+                                yield item;
+                            }
+                        }
+                    }
+                }
+                return target[key];
+            }
+        })
+    }})
+
+const map = loopFunctions.map;
+Object.defineProperty(loopFunctions,"map",{configurable:true,get() {
+        const ctx = this;
+        return new Proxy(map,{
+            get(target,key) {
+                if(key==="map") {
+                    return function*(f) {
+                        let i = 0;
+                        for (const item of ctx) {
+                            const value = f(item, i++, this);
+                            yield value;
+                        }
+                    }
+                }
+                return target[key];
+            }
+        })
+    }})
+
+const slice = loopFunctions.slice;
+Object.defineProperty(loopFunctions,"slice",{configurable:true,get() {
+        const ctx = this;
+        return new Proxy(slice,{
+            get(target,key) {
+                if(key==="slice") {
+                    return function*(start=0,end) {
+                        const set = ctx instanceof Set,
+                            len = set ? this.size : this.length;
+                        if(end===undefined) {
+                            end = len;
+                        }
+                        end = Math.min(end,len);
+                        if(end<0) {
+                            end = len - end;
+                        }
+                        let i = 0;
+                        for(const item of ctx) {
+                            if(i>=start) {
+                                if(i<end) yield item;
+                                else break;
+                            }
+                            i++;
+                        }
+                    }
+                }
+                return target[key];
+            }
+        })
+    }})
+
 
 export {loopFunctions,loopFunctions as default};

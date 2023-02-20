@@ -34,11 +34,18 @@ const i = (base,...rest) => intersection.call(base,...rest);
 const s = (base,...rest) => symmetricDifference.call(base,...rest);
 const u = (base,...rest) => union.call(base,...rest);
 
+const sub = (base,...rest) => isSubsetOf.call(base,...rest)
+const sup = (base,...rest) => isSupersetOf.call(base,...rest)
+const dis = (base,...rest) => isDisjointFrom.call(base,...rest)
+
 export {
     classPrototype,
     classPrototype as default,
     d as difference,
     i as intersection,
     s as symmetricDifference,
-    u as union
+    u as union,
+    sub as isSubsetOf,
+    sup as isSupersetOf,
+    dis as isDisjointFrom
 }
