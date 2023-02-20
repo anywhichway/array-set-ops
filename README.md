@@ -281,16 +281,16 @@ Unit testing is conducted with Mocha and C8.
 -------------------------|---------|----------|---------|---------|---------------------------------------------------------------------
 File                     | % Stmts | % Branch | % Funcs | % Lines | Uncovered Line #s                                                   
 -------------------------|---------|----------|---------|---------|---------------------------------------------------------------------
-All files                |   81.04 |    88.81 |   62.74 |   81.04 |                                                                    
+All files                |   80.42 |    90.32 |   62.26 |   80.42 |                                                                    
  aggregate-functions.js  |   45.45 |      100 |       0 |   45.45 | 4-8,11,14-19                                                       
- cartesian-product.js    |      92 |       90 |   85.71 |      92 | 53-54,70-73                                                        
+ cartesian-product.js    |   85.39 |    90.47 |   77.77 |   85.39 | 53-54,72-78,84-87                                                  
  difference.js           |     100 |    85.71 |     100 |     100 | 33,42,57                                                           
  index.js                |   98.03 |       90 |      70 |   98.03 | 18                                                                 
  intersection.js         |   97.77 |    96.15 |     100 |   97.77 | 54-55                                                              
  is-disjoint-from.js     |     100 |    85.71 |     100 |     100 | 26                                                                 
  is-subset-of.js         |   83.72 |    66.66 |     100 |   83.72 | 28-32,36-37                                                        
  is-superset-of.js       |   94.44 |    57.14 |     100 |   94.44 | 30-31                                                              
- loop-functions.js       |   39.53 |    84.61 |   35.29 |   39.53 | 3-12,15-19,22-30,33-36,39-42,69,72-90,93-98,106-117,126-136,145-167
+ loop-functions.js       |    39.3 |      100 |   35.29 |    39.3 | 3-12,15-19,22-30,33-36,39-42,69,72-90,93-98,106-117,126-137,146-168
  symmetric-difference.js |   80.53 |    90.47 |      50 |   80.53 | 76-78,89-107                                                       
  union.js                |     100 |      100 |     100 |     100 |                                                                    
 -------------------------|---------|----------|---------|---------|---------------------------------------------------------------------
@@ -336,6 +336,8 @@ union.iterable first x 66,899 ops/sec ±5.42% (75 runs sampled) 90590
 union.iterable x 38.88 ops/sec ±3.23% (50 runs sampled) 90590
 
 # Change History (Reverse Chronological Order)
+
+2023-02-20 v0.4.1 More unit tests. Fixed issue with `.map` indexing.
 
 2023-02-20 v0.4.0 More performance and unit tests. More documentation. Iterable versions of `filter`, `map`, `slice`.
 

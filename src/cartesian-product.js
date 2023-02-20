@@ -64,7 +64,21 @@ function CartesianProduct(...collections) {
 
 import loopFunctions from "./loop-functions.js";
 Object.entries(loopFunctions).forEach(([key,value]) => {
-    if(key!=="at" && key!=="slice") Object.defineProperty(CartesianProduct.prototype,key,{configurable:true,writable:true,value})
+    if(key!=="at" && key!=="slice") {
+        Object.defineProperty(CartesianProduct.prototype,key,{configurable:true,get() {
+                const ctx = this;
+                return new Proxy(value,{
+                    get(target,key) {
+                        let value = target[key];
+                        if(typeof(value)==="function") {
+                            value = value.bind(ctx);
+                            value.ctx = ctx;
+                        }
+                        return value;
+                    }
+                })
+            }})
+    }
 })
 
 function cartesianProduct(...collections) {

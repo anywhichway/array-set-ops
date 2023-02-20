@@ -52,8 +52,8 @@ const loopFunctions = {
             result = set ? new Set() : [];
         let i = 0;
         for (const item of this) {
-            const value = f(item, i++, this);
-            set ? result.add(value) : result[i] = value;
+            const value = f(item, i, this);
+            set ? result.add(value) : result[i++] = value;
         }
         return result;
     },
@@ -123,14 +123,15 @@ Object.defineProperty(loopFunctions,"map",{configurable:true,get() {
         const ctx = this;
         return new Proxy(map,{
             get(target,key) {
-                if(key==="map") {
-                    return function*(f) {
+                if(key==="iterable") {
+                    const f = function*(f) {
                         let i = 0;
-                        for (const item of ctx) {
+                        for (const item of f.ctx||ctx) {
                             const value = f(item, i++, this);
                             yield value;
                         }
                     }
+                    return f;
                 }
                 return target[key];
             }
@@ -142,7 +143,7 @@ Object.defineProperty(loopFunctions,"slice",{configurable:true,get() {
         const ctx = this;
         return new Proxy(slice,{
             get(target,key) {
-                if(key==="slice") {
+                if(key==="iterable") {
                     return function*(start=0,end) {
                         const set = ctx instanceof Set,
                             len = set ? this.size : this.length;

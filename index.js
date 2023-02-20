@@ -66,8 +66,8 @@ SOFTWARE.
         const set = this instanceof Set, result = set ? new Set() : [];
         let i = 0;
         for (const item of this){
-            const value = f(item, i++, this);
-            set ? result.add(value) : result[i] = value;
+            const value = f(item, i, this);
+            set ? result.add(value) : result[i++] = value;
         }
         return result;
     },
@@ -128,13 +128,16 @@ Object.defineProperty($2e79f34cf327f706$export$a42bef84e41fffbb, "map", {
         const ctx = this;
         return new Proxy($2e79f34cf327f706$var$map, {
             get (target, key) {
-                if (key === "map") return function*(f) {
-                    let i = 0;
-                    for (const item of ctx){
-                        const value = f(item, i++, this);
-                        yield value;
-                    }
-                };
+                if (key === "iterable") {
+                    const f = function*(f) {
+                        let i = 0;
+                        for (const item of f.ctx || ctx){
+                            const value = f(item, i++, this);
+                            yield value;
+                        }
+                    };
+                    return f;
+                }
                 return target[key];
             }
         });
@@ -147,7 +150,7 @@ Object.defineProperty($2e79f34cf327f706$export$a42bef84e41fffbb, "slice", {
         const ctx = this;
         return new Proxy($2e79f34cf327f706$var$slice, {
             get (target, key) {
-                if (key === "slice") return function*(start = 0, end) {
+                if (key === "iterable") return function*(start = 0, end) {
                     const set = ctx instanceof Set, len = set ? this.size : this.length;
                     if (end === undefined) end = len;
                     end = Math.min(end, len);

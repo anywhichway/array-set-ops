@@ -49,6 +49,36 @@ describe("Cartesian",() => {
         expect(section[1][0]).to.equal(2);
         expect(section[1][1]).to.equal(1);
     });
+    it("map",() => {
+        const product = CartesianProduct([1,2],[2,1]);
+        expect(product.size).to.equal(4);
+        const mapped = product.map(([a,b]) => [a+1,b+1]);
+        expect(mapped.length).to.equal(4);
+        expect(mapped.at(0)[0]).to.equal(2);
+        expect(mapped.at(0)[1]).to.equal(3);
+        expect(mapped.at(1)[0]).to.equal(2);
+        expect(mapped.at(1)[1]).to.equal(2);
+        expect(mapped.at(2)[0]).to.equal(3);
+        expect(mapped.at(2)[1]).to.equal(3);
+        expect(mapped.at(3)[0]).to.equal(3);
+        expect(mapped.at(3)[1]).to.equal(2);
+    });
+    xit("map - iterable",() => {
+        const product = CartesianProduct([1,2],[2,1]);
+        expect(product.size).to.equal(4);
+        let mapped = product.map.iterable(([a,b]) => [a+1,b+1]);
+        expect(typeof(mapped.next)).to.equal("function");
+        mapped = [...mapped];
+        expect(mapped.length).to.equal(4);
+        expect(mapped.at(0)[0]).to.equal(2);
+        expect(mapped.at(0)[1]).to.equal(3);
+        expect(mapped.at(1)[0]).to.equal(2);
+        expect(mapped.at(1)[1]).to.equal(2);
+        expect(mapped.at(2)[0]).to.equal(3);
+        expect(mapped.at(2)[1]).to.equal(3);
+        expect(mapped.at(3)[0]).to.equal(3);
+        expect(mapped.at(3)[1]).to.equal(2);
+    });
     it("loop",() => {
         const product = CartesianProduct([1,2],[2,1]);
         let i = 0;
