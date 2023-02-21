@@ -56,6 +56,8 @@ function* generatorCartesian([head, ...tail]) {
 gc();
 
 const cplen = cp.size;
+
+/*
  csuite.add("CartesianProduct first",() => {
        const result = cp;
        let i = 0;
@@ -87,7 +89,7 @@ const cplen = cp.size;
         const item = cp.at(Math.round(cplen/10));
         expect(Array.isArray(item)).to.equal(true);
     })
-     .add(`bigCartesian item at 10% point ${Math.round(cplen/10)}`,() => {
+    .add(`bigCartesian item at 10% point ${Math.round(cplen/10)}`,() => {
          const result = bigCartesian([arg1,arg2]);
          let i = 0;
          for(var item of result) {
@@ -109,24 +111,6 @@ const cplen = cp.size;
          }
          expect(Array.isArray(item)).to.equal(true);
      })
-    /* .add("bigCartesian all",() => {
-         const result = bigCartesian([arg1,arg2]);;
-         let count = 0;
-         for(const item of result) {
-             count++;
-         }
-     })
-    .add("CartesianProduct all",() => {
-        const result = cp;
-        let count = 0;
-        for(const item of result) {
-            count++;
-        }
-    })*/
-    // can't handle large arrays
-    /*.add("fastCartesian",() => {
-        const result = fastCartesian([arg1,arg2]);
-    })*/
     .on('cycle', function(event) {
         console.log(String(event.target),cplen);
         gc();
@@ -143,47 +127,46 @@ const cplen = cp.size;
             arg3 = args.slice(l3),
             arg4 = args.slice(l4),
             arg5 = args.slice(l5),
-            console.log("Lengths:",arg1.length,arg2.length,arg3.length,arg4.length,arg5.length)
+            console.log("Lengths:",arg1.length,arg2.length)
         gc();
     })
     .run();
-
+*/
 const dsuite = new Benchmark.Suite;
 dsuite.add("difference",() => {
-    const result = arg1.difference(arg2);
+    const result = difference(arg1,arg1);
     size = result.length;
 })
-    .add("difference.iterable first",() => {
-        for(const item of arg1.difference.iterable(arg2)) {
+    .add("Array difference",() => {
+        const result = arg1.difference(arg1);
+        size = result.length;
+    })
+    .add("Array difference.iterable first",() => {
+        for(const item of arg1.difference.iterable(arg1)) {
             break;
         }
     })
-    .add("difference.iterable",() => {
+    .add("Array difference.iterable",() => {
         size = 0;
-        for(const item of arg1.difference.iterable(arg2)) {
+        for(const item of arg1.difference.iterable(arg1)) {
             size++;
         }
     })
-    /*.add("difference short",() => {
-        const arg1 =[1,2], arg2 = [1,2,3];
-        const result = arg1.difference(arg2);
+    .add("difference short",() => {
+        const arg =[1,2];
+        const result = arg.difference(arg);
         size = result.length;
     })
     .add("diff.diff short",() => {
-        const arg1 =[1,2], arg2 = [1,2,3];
-        let result = diff.diff(arg1,arg2).added;
+        const arg =[1,2];
+        const result = diff.diff(arg,arg).added;
         size = result.length;
-    })*/
+    })
     // so slow it will not complete or it crashes
-    /*.add("diff.diff",() => {
-        try {
-            let result = diff.diff(arg1,arg2).added;
-            size = result.length;
-        } catch(e) {
-            console.log(e);
-            throw e;
-        }
-    })*/
+    .add("diff.diff",() => {
+        let result = diff.diff(arg1,arg1).added;
+        size = result.length;
+    })
     .on('cycle', function(event) {
         console.log(String(event.target),size);
         gc();
@@ -251,6 +234,7 @@ isuite.add("intersection",() => {
             arg3 = args.slice(l3),
             arg4 = args.slice(l4),
             arg5 = args.slice(l5),
+            console.log("Lengths:",arg1.length,arg2.length,arg3.length,arg4.length,arg5.length)
             gc();
     })
     .run();
@@ -287,6 +271,7 @@ ssuite.add("symmetricDifference",() => {
             arg3 = args.slice(l3),
             arg4 = args.slice(l4),
             arg5 = args.slice(l5),
+            console.log("Lengths:",arg1.length,arg2.length,arg3.length,arg4.length,arg5.length)
             gc();
     })
     .run();

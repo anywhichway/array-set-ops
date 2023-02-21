@@ -40,7 +40,7 @@ function* generatorCartesian([head, ...tail]) {
 }
 ```
 
-However, if there is a desire to sample or split the product for additional processing bottlenecks will occur because generator access must be sequential. With `CartsianProduct` you can do something like this:
+However, if there is a desire to sample or split the product for additional processing bottlenecks will occur because generator access must be sequential. With `CartesianProduct` you can do something like this:
 
 ```javascript
 const cp = CartesianProduct(array1,array2,array3);
@@ -125,7 +125,9 @@ const set = union(new Set([1,2,2,3]),[2,3,4]) // Set containing 1,2,3,4
     array = union([2,3,4],new Set([1,2,2,3])) // [2,3,4,1]
 ```
 
-## Loop Functions For Sets
+## Loop Functions For Sets and Cartesian Products
+
+The loop functions are built-in to JavaScript for `Array`.
 
 ```javascript
 import {classPrototype} from "array-set-ops";
@@ -139,13 +141,14 @@ Object.assign(Set.prototype,loopFunctions);
 - `at(number index)`
 - `cartesianProduct(...iterables)`
 - `every(function f)`
-- `filter(function f)`
+- `find(function f)`
 - `findIndex(any value)`
 - `filter(function f)`
 - `forEach(function f)`
 - `map(function f)`
 - `reduce(function f)`
 - `reduceRight(function f)`
+- `slice(start,end)`
 - `some(function f)`
 
 For example:
@@ -154,7 +157,7 @@ For example:
 const value = new Set([1,2,2,3]).reduce((sum,value) => sum + value); // 6
 ```
 
-## Aggregate Functions For Arrays and Sets
+## Aggregate Functions For Arrays, CartesianProducts, and Sets
 
 ```javascript
 import {aggregateFunctions} from "array-set-ops/src/aggregate-functions.js",
@@ -278,22 +281,22 @@ See the file `./test/index.js` for more examples.
 Unit testing is conducted with Mocha and C8.
 
 ```
--------------------------|---------|----------|---------|---------|---------------------------------------------------------------------
-File                     | % Stmts | % Branch | % Funcs | % Lines | Uncovered Line #s                                                   
--------------------------|---------|----------|---------|---------|---------------------------------------------------------------------
-All files                |   80.42 |    90.32 |   62.26 |   80.42 |                                                                    
- aggregate-functions.js  |   45.45 |      100 |       0 |   45.45 | 4-8,11,14-19                                                       
- cartesian-product.js    |   85.39 |    90.47 |   77.77 |   85.39 | 53-54,72-78,84-87                                                  
- difference.js           |     100 |    85.71 |     100 |     100 | 33,42,57                                                           
- index.js                |   98.03 |       90 |      70 |   98.03 | 18                                                                 
- intersection.js         |   97.77 |    96.15 |     100 |   97.77 | 54-55                                                              
- is-disjoint-from.js     |     100 |    85.71 |     100 |     100 | 26                                                                 
- is-subset-of.js         |   83.72 |    66.66 |     100 |   83.72 | 28-32,36-37                                                        
- is-superset-of.js       |   94.44 |    57.14 |     100 |   94.44 | 30-31                                                              
- loop-functions.js       |    39.3 |      100 |   35.29 |    39.3 | 3-12,15-19,22-30,33-36,39-42,69,72-90,93-98,106-117,126-137,146-168
- symmetric-difference.js |   80.53 |    90.47 |      50 |   80.53 | 76-78,89-107                                                       
- union.js                |     100 |      100 |     100 |     100 |                                                                    
--------------------------|---------|----------|---------|---------|---------------------------------------------------------------------
+-------------------------|---------|----------|---------|---------|----------------------------------------------------------
+File                     | % Stmts | % Branch | % Funcs | % Lines | Uncovered Line #s                                        
+-------------------------|---------|----------|---------|---------|----------------------------------------------------------
+All files                |   82.39 |    88.43 |   68.42 |   82.39 |                                                         
+ aggregate-functions.js  |   45.45 |      100 |       0 |   45.45 | 4-8,11,14-19                                            
+ cartesian-product.js    |   90.83 |    90.62 |   84.61 |   90.83 | 51-54,66-67,110-111,126-129                             
+ difference.js           |     100 |    85.71 |     100 |     100 | 33,42,57                                                
+ index.js                |   98.03 |       90 |      70 |   98.03 | 18                                                      
+ intersection.js         |   97.77 |    96.15 |     100 |   97.77 | 54-55                                                   
+ is-disjoint-from.js     |     100 |    85.71 |     100 |     100 | 26                                                      
+ is-subset-of.js         |   83.72 |    66.66 |     100 |   83.72 | 28-32,36-37                                             
+ is-superset-of.js       |   94.44 |    57.14 |     100 |   94.44 | 30-31                                                   
+ loop-functions.js       |   45.25 |    81.81 |   47.05 |   45.25 | 3-12,23-32,35-39,75,78-96,99-104,112-123,132-143,152-174
+ symmetric-difference.js |   80.53 |    90.47 |      50 |   80.53 | 76-78,89-107                                            
+ union.js                |     100 |      100 |     100 |     100 |                                                         
+-------------------------|---------|----------|---------|---------|----------------------------------------------------------
 ```
 
 # Benchmarks
@@ -336,6 +339,8 @@ union.iterable first x 66,899 ops/sec ±5.42% (75 runs sampled) 90590
 union.iterable x 38.88 ops/sec ±3.23% (50 runs sampled) 90590
 
 # Change History (Reverse Chronological Order)
+
+2023-02-21 v0.4.2 More unit tests. Fixed issue with scoping of iterable looping functions on `CartesianProduct`.
 
 2023-02-20 v0.4.1 More unit tests. Fixed issue with `.map` indexing.
 

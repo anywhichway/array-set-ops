@@ -15,18 +15,6 @@ Object.assign(Array.prototype,aggregateFunctions);
 Array.prototype.cartesianProduct = cartesianProduct;
 
 describe("Cartesian",() => {
-    xit("cartesianProduct",() => {
-        const product = [1,2].cartesianProduct([2,1]);
-        expect(product.length).to.equal(4);
-        expect(product.at(0)[0]).to.equal(1);
-        expect(product.at(0)[1]).to.equal(2);
-        expect(product.at(1)[0]).to.equal(1);
-        expect(product.at(1)[1]).to.equal(1);
-        expect(product.at(2)[0]).to.equal(2);
-        expect(product.at(2)[1]).to.equal(2);
-        expect(product.at(3)[0]).to.equal(2);
-        expect(product.at(3)[1]).to.equal(1);
-    });
     it("CartesianProduct",() => {
         const product = CartesianProduct([1,2],[2,1]);
         expect(product.size).to.equal(4);
@@ -39,15 +27,38 @@ describe("Cartesian",() => {
         expect(product.at(3)[0]).to.equal(2);
         expect(product.at(3)[1]).to.equal(1);
     });
-    it("slice",() => {
+    it("at",() => {
         const product = CartesianProduct([1,2],[2,1]);
-        expect(product.size).to.equal(4);
-        const section = [...product.slice(2,4)];
-        expect(section.length).to.equal(2);
-        expect(section[0][0]).to.equal(2);
-        expect(section[0][1]).to.equal(2);
-        expect(section[1][0]).to.equal(2);
-        expect(section[1][1]).to.equal(1);
+        expect(product.at(1)[0]).to.equal(1);
+        expect(product.at(1)[1]).to.equal(1);
+    });
+    it("every",() => {
+        const product = CartesianProduct([1,2],[2,1]);
+        let i = 0;
+        expect(product.every((item) => expect(Array.isArray(item)).to.equal(true) && ++i)).to.equal(true);
+        expect(i).to.equal(4);
+    });
+    it("filter",() => {
+        const product = CartesianProduct([1,2],[2,1]);
+        expect(product.filter((item) => item).length).to.equal(4);
+    });
+    it("findIndex",() => {
+        const product = CartesianProduct([1,2],[2,1]);
+        expect(product.findIndex(([a,b]) => a===2 && b===2)).to.equal(2);
+    });
+    it("forEach",() => {
+        const product = CartesianProduct([1,2],[2,1]);
+        const result = [];
+        product.forEach(([a,b],i) => result[i] = [++a,++b]);
+        expect(result.length).to.equal(4);
+        expect(result.at(0)[0]).to.equal(2);
+        expect(result.at(0)[1]).to.equal(3);
+        expect(result.at(1)[0]).to.equal(2);
+        expect(result.at(1)[1]).to.equal(2);
+        expect(result.at(2)[0]).to.equal(3);
+        expect(result.at(2)[1]).to.equal(3);
+        expect(result.at(3)[0]).to.equal(3);
+        expect(result.at(3)[1]).to.equal(2);
     });
     it("map",() => {
         const product = CartesianProduct([1,2],[2,1]);
@@ -63,9 +74,8 @@ describe("Cartesian",() => {
         expect(mapped.at(3)[0]).to.equal(3);
         expect(mapped.at(3)[1]).to.equal(2);
     });
-    xit("map - iterable",() => {
+    it("map.iterable",() => {
         const product = CartesianProduct([1,2],[2,1]);
-        expect(product.size).to.equal(4);
         let mapped = product.map.iterable(([a,b]) => [a+1,b+1]);
         expect(typeof(mapped.next)).to.equal("function");
         mapped = [...mapped];
@@ -78,6 +88,47 @@ describe("Cartesian",() => {
         expect(mapped.at(2)[1]).to.equal(3);
         expect(mapped.at(3)[0]).to.equal(3);
         expect(mapped.at(3)[1]).to.equal(2);
+    });
+    it("reduce",() => {
+        const product = CartesianProduct([1,2],[2,1]),
+            reduced = product.reduce(([ra,rb],[a,b]) => [ra-1,rb-1])
+        expect(reduced.length).to.equal(2);
+        expect(reduced[0]).to.equal(-2);
+        expect(reduced[1]).to.equal(-1);
+    });
+    it("reduce with start",() => {
+        const product = CartesianProduct([1,2],[2,1]),
+            reduced = product.reduce(([ra,rb],[a,b]) => [ra+a,rb+b],[1,1])
+        expect(reduced.length).to.equal(2);
+        expect(reduced[0]).to.equal(7);
+        expect(reduced[1]).to.equal(7);
+    });
+    it("reduceRight",() => {
+        const product = CartesianProduct([1,2],[2,1]),
+            reduced = product.reduceRight(([ra,rb],[a,b]) => [ra-a,rb-b])
+        expect(reduced.length).to.equal(2);
+        expect(reduced[0]).to.equal(-2);
+        expect(reduced[1]).to.equal(-4);
+    });
+    it("slice.iterable",() => {
+        const product = CartesianProduct([1,2],[2,1]);
+        const section = product.slice(2,4);
+        expect(section.length).to.equal(2);
+        expect(section[0][0]).to.equal(2);
+        expect(section[0][1]).to.equal(2);
+        expect(section[1][0]).to.equal(2);
+        expect(section[1][1]).to.equal(1);
+    });
+    it("slice iterable",() => {
+        const product = CartesianProduct([1,2],[2,1]);
+        const slice = product.slice.iterable(2,4);
+        expect(typeof(slice.next)).to.equal("function");
+        const section = [...slice];
+        expect(section.length).to.equal(2);
+        expect(section[0][0]).to.equal(2);
+        expect(section[0][1]).to.equal(2);
+        expect(section[1][0]).to.equal(2);
+        expect(section[1][1]).to.equal(1);
     });
     it("loop",() => {
         const product = CartesianProduct([1,2],[2,1]);
@@ -99,6 +150,18 @@ describe("Cartesian",() => {
             i++
         }
     })
+    xit("Array cartesianProduct",() => {
+        const product = [1,2].cartesianProduct([2,1]);
+        expect(product.length).to.equal(4);
+        expect(product.at(0)[0]).to.equal(1);
+        expect(product.at(0)[1]).to.equal(2);
+        expect(product.at(1)[0]).to.equal(1);
+        expect(product.at(1)[1]).to.equal(1);
+        expect(product.at(2)[0]).to.equal(2);
+        expect(product.at(2)[1]).to.equal(2);
+        expect(product.at(3)[0]).to.equal(2);
+        expect(product.at(3)[1]).to.equal(1);
+    });
 })
 
 describe("Array",() => {

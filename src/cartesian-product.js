@@ -37,47 +37,109 @@ function CartesianProduct(...collections) {
             n = 0;
             return {done: true};
         }});
-        Object.defineProperty(this,"at",{configurable:true,writable:true,value:function(n) {
-            for (var c=[],i=collections.length;i--;)c[i]=collections[i][(n/dm[i][0]<<0)%dm[i][1]];
-            return c;
-        }});
-        Object.assign(this,{
-            [Symbol.iterator]() {
-                return this;
+    Object.defineProperty(this,"at",{configurable:true,writable:true,value:function(n) {
+        for (var c=[],i=collections.length;i--;)c[i]=collections[i][(n/dm[i][0]<<0)%dm[i][1]];
+        return c;
+    }});
+    Object.assign(this,{
+        [Symbol.iterator]() {
+            return this;
+        }
+    });
+    const ctx = this;
+    Object.defineProperty(this.filter,"iterable",{configurable:true,*value(start=0,end) {
+            for(const item of ctx) {
+                if(f(item)) yield item;
             }
-        });
-        Object.defineProperty(this,"slice",{configurable:true,*value(start=0,end) {
-                    end ||= this.size;
-                    end = Math.min(end,this.size);
-                    if(end<0) {
-                        end = this.size - end;
-                    }
-                    while(start<end) {
-                        yield this.at(start);
-                        start++;
-                    }
-                }
-            });
-        Object.defineProperty(this,"size",{configurable:true,get() { return f; }});
-        return this;
+        }
+    });
+    Object.defineProperty(this.map,"iterable",{configurable:true,*value(f) {
+        for(const item of ctx) {
+            yield f(item)
+        }
+    }});
+    Object.defineProperty(this.slice,"iterable",{configurable:true,*value(start=0,end) {
+        const size = ctx.size;
+            end ||= size;
+            end = Math.min(end,size);
+            if(end<0) {
+                end = size - end;
+            }
+            while(start<end) {
+                yield ctx.at(start);
+                start++;
+            }
+        }
+    });
+    Object.defineProperty(this,"size",{configurable:true,get() { return f; }});
+    return this;
+}
+CartesianProduct.prototype.arrayLike = function(allowSet) {
+    return new Proxy(this,{
+        get(target,key) {
+            const num = parseFloat(key);
+            return num==key ? (allowSet ? target[Math.round(num)] || target.at(Math.round(num)) : target.at(Math.round(num))) : target[key];
+        },
+        set(target,key, value) {
+            if(allowSet) {
+                target[key] = value;
+                return true;
+            }
+            let num = parseFloat(key);
+            if(num==key) {
+                throw new Error(`Can't update values in array like CartesianProduct`)
+            }
+            target[key] = value;
+            return true;
+        }
+    })
+}
+CartesianProduct.prototype.filter = function(f) {
+    const result = [];
+    let i = 0;
+    for (const item of this) {
+        if(f(item, i, this)) {
+           result.push(item)
+        }
+        i++;
     }
+    return result;
+}
+CartesianProduct.prototype.map = function(f) {
+    const result = [];
+    let i = 0;
+    for (const item of this) {
+        const value = f(item, i, this);
+        result[i++] = value;
+    }
+    return result;
+}
+CartesianProduct.prototype.reduceRight = function(f,result) {
+    let i = this.size;
+    while(--i>=0) {
+        if (result === undefined) result = this.at(i);
+        else result = f(result, this.at(i), i, this);
+    }
+    return result;
+}
+CartesianProduct.prototype.slice = function(start=0,end) {
+    const items = [], size = this.size;
+    end ||= size;
+    end = Math.min(end,size);
+    if(end<0) {
+        end = size - end;
+    }
+    while(start<end) {
+        items.push(this.at(start));
+        start++;
+    }
+    return items;
+}
 
 import loopFunctions from "./loop-functions.js";
 Object.entries(loopFunctions).forEach(([key,value]) => {
-    if(key!=="at" && key!=="slice") {
-        Object.defineProperty(CartesianProduct.prototype,key,{configurable:true,get() {
-                const ctx = this;
-                return new Proxy(value,{
-                    get(target,key) {
-                        let value = target[key];
-                        if(typeof(value)==="function") {
-                            value = value.bind(ctx);
-                            value.ctx = ctx;
-                        }
-                        return value;
-                    }
-                })
-            }})
+    if(!["at","filter","map","reduceRight","slice"].includes(key)) {
+        CartesianProduct.prototype[key] = value;
     }
 })
 

@@ -36,31 +36,40 @@ SOFTWARE.
     every (f) {
         let i = 0;
         for (const item of this){
-            if (!f(item, i++, this)) return false;
+            if (!f(item, i, this)) return false;
+            i++;
         }
         return true;
     },
     filter (f) {
         const set = this instanceof Set, result = set ? new Set() : [];
         let i = 0;
-        for (const item of this)if (f(item, i++, this)) set ? result.add(item) : result.push(item);
+        for (const item of this){
+            if (f(item, i, this)) set ? result.add(item) : result.push(item);
+            i++;
+        }
         return result;
     },
     find (f) {
         let i = 0;
         for (const item of this){
-            if (f(item, i++, this)) return item;
+            if (f(item, i, this)) return item;
+            i++;
         }
     },
     findIndex (f) {
         let i = 0;
         for (const item of this){
-            if (f(item, i++, this)) return i;
+            if (f(item, i, this)) return i;
+            i++;
         }
     },
     forEach (f) {
         let i = 0;
-        for (const item of this)f(item, i++, this);
+        for (const item of this){
+            f(item, i, this);
+            i++;
+        }
     },
     map (f) {
         const set = this instanceof Set, result = set ? new Set() : [];
@@ -73,12 +82,15 @@ SOFTWARE.
     },
     reduce (f, result) {
         let i = 0;
-        for (const item of this)if (result === undefined) result = item;
-        else result = f(result, item, i++, this);
+        for (const item of this){
+            if (result === undefined) result = item;
+            else result = f(result, item, i, this);
+            i++;
+        }
         return result;
     },
     reduceRight (f, result) {
-        return Array.isArray(this) ? this.reduceRight(f, result) : [
+        Array.isArray(this) ? this.reduceRight(f, result) : [
             ...this
         ].reduceRight(f, result);
     },
