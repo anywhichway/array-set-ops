@@ -1,6 +1,6 @@
 {
   "name": "array-set-ops",
-  "version": "0.4.1",
+  "version": "0.4.2",
   "description": "Extremely fast set and map/reduce operations for Arrays and Sets",
   "type": "module",
   "source": "src/index.js",
