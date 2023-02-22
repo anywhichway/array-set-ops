@@ -76,19 +76,19 @@ The four functions below return an Array or Set depending on class of the first 
 
 - `difference(base,...iterables)` returns items in base but not in the rest of the iterables
 - `intersection(...iterables)`
-- `symmetricDifference(...iterables)` returns all items that exist in at most one of the iterables, i.
+- `symmetricDifference(...iterables)` returns all items that exist in at most one of the iterables.
 - `union(...iterables)`
 
 Each of the above also has a form:
 
 `<operation>.iterable(...iterables)` where `operation` is one of `difference`, `intersection`, `symmetricDifference`, `union`.
 
-These iterable versions can prevent the blocking of a data processing pipeline by returning values on demand rather than all at once. The gains in performance depend on the nature of the data processed but are typically as follows:
+These iterable versions can prevent the blocking of a data processing pipeline by returning values on demand rather than all at once. The gains in performance depend heavily on the nature of the data processed but are typically as follows:
 
-- difference, 3 to 4 orders of magnitude
-- intersection, 2x
-- symmetricDifference, 2x
-- union, 3 to 4 orders of magnitude
+- difference, 1.5 to 2x
+- intersection, 1.5 to 2x
+- symmetricDifference, 2.5 to 3x
+- union, 2.5 to 3 orders of magnitude
 
 The below function return true if the named predicate is true of the base for all the iterables passed in.
 
@@ -355,6 +355,8 @@ union.iterable x 64.74 ops/sec ±1.61% (64 runs sampled) 79910
 ```
 
 # Change History (Reverse Chronological Order)
+
+2023-02-23 v0.4.4 Corrected speed summary close to top of README.
 
 2023-02-22 v0.4.3 More unit tests. Optimized `difference` and `symmetricDifference`.
 
