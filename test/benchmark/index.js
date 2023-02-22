@@ -9,14 +9,13 @@ const chai = await import("chai"),
 
 import Benchmark from "benchmark";
 
-import {classPrototype} from "../../src/index.js";
+import {classPrototype,difference,intersection,symmetricDifference,union,isDisjointFrom,isSubsetOf,isSupersetOf} from "../../src/index.js";
 import {loopFunctions} from "../../src/loop-functions.js";
 import {aggregateFunctions} from "../../src/aggregate-functions.js";
 import {cartesianProduct,CartesianProduct} from  "../../src/cartesian-product.js";
 import fastCartesian from 'fast-cartesian';
 import bigCartesian from 'big-cartesian';
 import intersect from "fast_array_intersect";
-import * as diff from "fast-array-diff";
 
 classPrototype.patch(Set);
 Object.assign(Set.prototype,loopFunctions);
@@ -28,23 +27,21 @@ Array.prototype.cartesianProduct = cartesianProduct;
 
 const args = [];
 for(let i=0;i<100000;i++) {
-    args.push(Math.round(i*Math.random()*10));
+    args.push(Math.round(i*Math.random()*10 * (Math.random()>.5 ? - 1 : 1)));
 }
 let l1 = args.length*Math.random(),
     l2 = args.length*Math.random(),
     l3 = args.length*Math.random(),
     l4 = args.length*Math.random(),
     l5 = args.length*Math.random(),
-    arg1 = args.slice(l1),
-    arg2 = args.slice(l2),
-    arg3 = args.slice(l3),
-    arg4 = args.slice(l4),
-    arg5 = args.slice(l5);
-console.log("Lengths:",arg1.length,arg2.length,arg3.length,arg4.length,arg5.length)
+    arg1 = args.slice(l1).sort((a,b) => Math.random()>.5 ? 1 : - 1).map((item) => item * (Math.random()>.5 ? - 1 : 1)),
+    arg2 = args.slice(l2).sort((a,b) => Math.random()>.5 ? 1 : - 1),
+    arg3 = args.slice(l3).sort((a,b) => Math.random()>.5 ? 1 : - 1);
+console.log("Lengths:",arg1.length,arg2.length,arg3.length)
 let size;
 
 const csuite = new Benchmark.Suite;
-//csuite.add("cartesianProduct",() => {
+///csuite.add("cartesianProduct",() => {
     //const result = arg1.cartesianProduct(arg2);
 //})
 const cp = CartesianProduct(arg1,arg2);
@@ -55,9 +52,127 @@ function* generatorCartesian([head, ...tail]) {
 
 gc();
 
-const cplen = cp.size;
 
-/*
+const dsuite = new Benchmark.Suite;
+dsuite.add("difference",() => {
+        const result = arg1.difference(arg2,arg3);
+        size = result.length;
+    })
+    .add("Array difference.iterable first",() => {
+        size = 0;
+        for(const item of arg1.difference.iterable(arg2,arg3)) {
+            size = 1;
+            break;
+        }
+    })
+    .add("Array difference.iterable",() => {
+        size = 0;
+        for(const item of arg1.difference.iterable(arg2,arg3)) {
+            size++;
+        }
+    })
+    .on('cycle', function(event) {
+        console.log(String(event.target),size);
+        gc();
+    })
+    .on('complete', function() {
+        console.log('Fastest is ' + this.filter('fastest').map('name'));
+        console.log("Lengths:",arg1.length,arg2.length,arg3.length)
+        gc();
+    })
+    .run();
+
+const isuite = new Benchmark.Suite;
+    isuite.add("intersection",() => {
+        const result = arg1.intersection(arg2,arg3);
+        size = result.length;
+    })
+    .add("intersection.iterable first",() => {
+        size = 0;
+        for(const item of arg1.intersection.iterable(arg2,arg3)) {
+            size = 1;
+            break;
+        }
+    })
+    .add("intersect.iterable",() => {
+        size = 0;
+        for(const item of arg1.intersection.iterable(arg2,arg3)) {
+           size++;
+        }
+    })
+    .add("fast_array_intersect",() => {
+        const result = intersect.default([arg1,arg2,arg3]);
+        size = result.length;
+    })
+    .on('cycle', function(event) {
+        console.log(String(event.target),size);
+        gc();
+    })
+    .on('complete', function() {
+        console.log('Fastest is ' + this.filter('fastest').map('name'));
+        console.log("Lengths:",arg1.length,arg2.length,arg3.length)
+        gc();
+    })
+    .run();
+
+const ssuite = new Benchmark.Suite;
+ssuite.add("symmetricDifference",() => {
+    const result = arg1.symmetricDifference(arg2,arg3);
+    size = result.length;
+})
+    .add("symmetricDifference.iterable first",() => {
+        size = 0;
+        for(const item of arg1.symmetricDifference.iterable(arg2,arg3)) {
+            size = 1;
+            break;
+        }
+    })
+    .add("symmetricDifference.iterable",() => {
+        size = 0;
+        for(const item of arg1.symmetricDifference.iterable(arg2,arg3)) {
+            size++;
+        }
+    })
+    .on('cycle', function(event) {
+        console.log(String(event.target),size);
+        gc();
+    })
+    .on('complete', function() {
+        console.log('Fastest is ' + this.filter('fastest').map('name'));
+        console.log("Lengths:",arg1.length,arg2.length,arg3.length)
+        gc();
+    })
+    .run();
+
+const usuite = new Benchmark.Suite;
+usuite.add("union",() => {
+    const result = arg1.union(arg2,arg3);
+    size = result.length;
+})
+    .add("union.iterable first",() => {
+        size = 0;
+        for(const item of arg1.union.iterable(arg2,arg3)) {
+            size = 1;
+            break;
+        }
+    })
+    .add("union.iterable",() => {
+        size = 0;
+        for(const item of arg1.union.iterable(arg2,arg3)) {
+            size++;
+        }
+    })
+    .on('cycle', function(event) {
+        console.log(String(event.target),size);
+        gc();
+    })
+    .on('complete', function() {
+        console.log('Fastest is ' + this.filter('fastest').map('name'));
+        gc();
+    })
+    .run();
+
+const cplen = cp.size;
  csuite.add("CartesianProduct first",() => {
        const result = cp;
        let i = 0;
@@ -117,200 +232,11 @@ const cplen = cp.size;
     })
     .on("complete",function() {
         console.log('Fastest is ' + this.filter('fastest').map('name'));
-        l1 = args.length*Math.random(),
-            l2 = args.length*Math.random(),
-            l3 = args.length*Math.random(),
-            l4 = args.length*Math.random(),
-            l5 = args.length*Math.random(),
-            arg1 = args.slice(l1),
-            arg2 = args.slice(l2),
-            arg3 = args.slice(l3),
-            arg4 = args.slice(l4),
-            arg5 = args.slice(l5),
-            console.log("Lengths:",arg1.length,arg2.length)
+        console.log("Lengths:",arg1.length,arg2.length,arg3.length);
         gc();
-    })
-    .run();
-*/
-const dsuite = new Benchmark.Suite;
-dsuite.add("difference",() => {
-    const result = difference(arg1,arg1);
-    size = result.length;
-})
-    .add("Array difference",() => {
-        const result = arg1.difference(arg1);
-        size = result.length;
-    })
-    .add("Array difference.iterable first",() => {
-        for(const item of arg1.difference.iterable(arg1)) {
-            break;
-        }
-    })
-    .add("Array difference.iterable",() => {
-        size = 0;
-        for(const item of arg1.difference.iterable(arg1)) {
-            size++;
-        }
-    })
-    .add("difference short",() => {
-        const arg =[1,2];
-        const result = arg.difference(arg);
-        size = result.length;
-    })
-    .add("diff.diff short",() => {
-        const arg =[1,2];
-        const result = diff.diff(arg,arg).added;
-        size = result.length;
-    })
-    // so slow it will not complete or it crashes
-    .add("diff.diff",() => {
-        let result = diff.diff(arg1,arg1).added;
-        size = result.length;
-    })
-    .on('cycle', function(event) {
-        console.log(String(event.target),size);
-        gc();
-    })
-    .on('complete', function() {
-        console.log('Fastest is ' + this.filter('fastest').map('name'));
-        l1 = args.length*Math.random(),
-            l2 = args.length*Math.random(),
-            l3 = args.length*Math.random(),
-            l4 = args.length*Math.random(),
-            l5 = args.length*Math.random(),
-            arg1 = args.slice(l1),
-            arg2 = args.slice(l2),
-            arg3 = args.slice(l3),
-            arg4 = args.slice(l4),
-            arg5 = args.slice(l5),
-            console.log("Lengths:",arg1.length,arg2.length,arg3.length,arg4.length,arg5.length)
-            gc();
     })
     .run();
 
-const isuite = new Benchmark.Suite;
-isuite.add("intersection",() => {
-    const result = arg1.intersection(arg2,arg3,arg4,arg5);
-    size = result.length;
-})
-    .add("intersection.iterable first",() => {
-        for(const item of arg1.intersection.iterable(arg2,arg3,arg4,arg5)) {
-            break;
-        }
-    })
-    .add("intersect.iterable",() => {
-        size = 0;
-        for(const item of arg1.intersection.iterable(arg2,arg3,arg4,arg5)) {
-           size++;
-        }
-    })
-    .add("fast_array_intersect",() => {
-        const result = intersect.default([arg1,arg2,arg3,arg4,arg5]);
-        size = result.length;
-    })
-    // so slow it will not complete
-    /*
-    .add("diff.same",() => {
-        const result = [arg2,arg3,arg4,arg5].reduce((array,arg) => {
-            const result = diff.same(arg1,arg);
-            return array = [...array,...result.value];
-        },[])
-        size = result.length;
-    })
-    */
-    .on('cycle', function(event) {
-        console.log(String(event.target),size);
-        gc();
-    })
-    .on('complete', function() {
-        console.log('Fastest is ' + this.filter('fastest').map('name'));
-        l1 = args.length*Math.random(),
-            l2 = args.length*Math.random(),
-            l3 = args.length*Math.random(),
-            l4 = args.length*Math.random(),
-            l5 = args.length*Math.random(),
-            arg1 = args.slice(l1),
-            arg2 = args.slice(l2),
-            arg3 = args.slice(l3),
-            arg4 = args.slice(l4),
-            arg5 = args.slice(l5),
-            console.log("Lengths:",arg1.length,arg2.length,arg3.length,arg4.length,arg5.length)
-            gc();
-    })
-    .run();
-
-const ssuite = new Benchmark.Suite;
-ssuite.add("symmetricDifference",() => {
-    const result = arg1.symmetricDifference(arg2,arg3,arg4,arg5);
-    size = result.length;
-})
-    .add("symmetricDifference.iterable first",() => {
-        for(const item of arg1.symmetricDifference.iterable(arg2,arg3,arg4,arg5)) {
-            break;
-        }
-    })
-    .add("symmetricDifference.iterable",() => {
-        size = 0;
-        for(const item of arg1.symmetricDifference.iterable(arg2,arg3,arg4,arg5)) {
-            size++;
-        }
-    })
-    .on('cycle', function(event) {
-        console.log(String(event.target),size);
-        gc();
-    })
-    .on('complete', function() {
-        console.log('Fastest is ' + this.filter('fastest').map('name'));
-        l1 = args.length*Math.random(),
-            l2 = args.length*Math.random(),
-            l3 = args.length*Math.random(),
-            l4 = args.length*Math.random(),
-            l5 = args.length*Math.random(),
-            arg1 = args.slice(l1),
-            arg2 = args.slice(l2),
-            arg3 = args.slice(l3),
-            arg4 = args.slice(l4),
-            arg5 = args.slice(l5),
-            console.log("Lengths:",arg1.length,arg2.length,arg3.length,arg4.length,arg5.length)
-            gc();
-    })
-    .run();
-
-const usuite = new Benchmark.Suite;
-usuite.add("union",() => {
-    const result = arg1.union(arg2,arg3,arg4,arg5);
-    size = result.length;
-})
-    .add("union.iterable first",() => {
-        for(const item of arg1.union.iterable(arg2,arg3,arg4,arg5)) {
-            break;
-        }
-    })
-    .add("union.iterable",() => {
-        size = 0;
-        for(const item of arg1.union.iterable(arg2,arg3,arg4,arg5)) {
-            size++;
-        }
-    })
-    .on('cycle', function(event) {
-        console.log(String(event.target),size);
-        gc();
-    })
-    .on('complete', function() {
-        console.log('Fastest is ' + this.filter('fastest').map('name'));
-        l1 = args.length*Math.random(),
-            l2 = args.length*Math.random(),
-            l3 = args.length*Math.random(),
-            l4 = args.length*Math.random(),
-            l5 = args.length*Math.random(),
-            arg1 = args.slice(l1),
-            arg2 = args.slice(l2),
-            arg3 = args.slice(l3),
-            arg4 = args.slice(l4),
-            arg5 = args.slice(l5),
-            gc();
-    })
-    .run();
 
 
 

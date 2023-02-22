@@ -64,7 +64,7 @@ const create = (iterating) => {
             const array = arrays[i];
             for(;j<array.length;j++) {
                 const item = array[j];
-                if(!memory.has(item)) {
+                if(!(diff.has(item) || memory.has(item))) {
                     memory.add(item);
                     for(;k<sets.length;k++) {
                         if(k===i) continue;
@@ -83,6 +83,8 @@ const create = (iterating) => {
             j = 0;
         }
         arrays = null;
+        sets = null;
+        memory = null;
         return iterating ? {done:true} : (set ? diff : [...diff]);
     }
 }

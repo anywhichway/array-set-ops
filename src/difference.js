@@ -22,39 +22,41 @@ SOFTWARE.
 
 import {loopFunctions} from "./loop-functions.js";
 
-import intersection from "./intersection.js";
-/* Portions of algorithm taken from old version of https://github.com/lovasoa/fast_array_intersect under MIT license */
 const create = (iterating) => {
-    let i, j, base, nOthers, args, memory, seen, diff;
+    let i, j, base, args, diff, memory;
     return function () {
-        const set = this instanceof Set;
         if(!args) {
-            args = [...arguments],
-            base = set ? [...this] : this;
+            args =[].map.call(arguments,(arg) => arg instanceof Set ? arg : new Set(arg)),
+            base = Array.isArray(this) ? this : [...this];
             diff = new Set();
+            memory = new Set();
             i = 0;
             j = 0;
         }
-        for(;i<base.length;i++) {
+        for(;i<base.length;i++) { // for each item in the base
             let item = base[i];
-            for(;j<args.length;j++) {
-                const arg = args[j];
-                if(Array.isArray(arg) ? arg.includes(item) : arg.has(item)) {
-                    break
+            if(!(diff.has(item) || memory.has(item))) { // if it is not already part of the difference or seen
+                memory.add(item);
+                for (; j < args.length; j++) { // see if another arg contains it
+                    const arg = args[j];
+                    if (arg.has(item)) {
+                        break; // it is contained
+                    }
                 }
-            }
-            if(j===args.length) {
-                if(iterating) {
-                    i++;
-                    j = 0;
-                    return {value: item};
+                if (j === args.length) { // it was not contained, so add to difference
+                    diff.add(item);
+                    if (iterating) {
+                        i++;
+                        j = 0;
+                        return {value: item};
+                    }
                 }
-                diff.add(item);
+                j = 0;
             }
-            j = 0;
         }
         args = null;
-        return iterating ? { done: true} : (set ? diff : [...diff]);
+        memory = null;
+        return iterating ? { done: true} : (Array.isArray(this) ? [...diff] : diff);
     }
 }
 function iterable(...args) {

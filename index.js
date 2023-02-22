@@ -183,6 +183,68 @@ Object.defineProperty($2e79f34cf327f706$export$a42bef84e41fffbb, "slice", {
 });
 
 
+const $1d6902f2c8ca2182$var$create = (iterating)=>{
+    let i, j, base, args, diff, memory;
+    return function() {
+        if (!args) {
+            args = [].map.call(arguments, (arg)=>arg instanceof Set ? arg : new Set(arg)), base = Array.isArray(this) ? this : [
+                ...this
+            ];
+            diff = new Set();
+            memory = new Set();
+            i = 0;
+            j = 0;
+        }
+        for(; i < base.length; i++){
+            let item = base[i];
+            if (!(diff.has(item) || memory.has(item))) {
+                memory.add(item);
+                for(; j < args.length; j++){
+                    const arg = args[j];
+                    if (arg.has(item)) break; // it is contained
+                }
+                if (j === args.length) {
+                    diff.add(item);
+                    if (iterating) {
+                        i++;
+                        j = 0;
+                        return {
+                            value: item
+                        };
+                    }
+                }
+                j = 0;
+            }
+        }
+        args = null;
+        memory = null;
+        return iterating ? {
+            done: true
+        } : Array.isArray(this) ? [
+            ...diff
+        ] : diff;
+    };
+};
+function $1d6902f2c8ca2182$var$iterable(...args) {
+    const difference = $1d6902f2c8ca2182$var$create(true), ctx = this;
+    let started;
+    return {
+        next () {
+            if (started) return difference();
+            started = true;
+            return difference.call(ctx, ...args);
+        },
+        [Symbol.iterator] () {
+            started = false;
+            return this;
+        },
+        ...(0, $2e79f34cf327f706$export$a42bef84e41fffbb)
+    };
+}
+const $1d6902f2c8ca2182$export$acaf96a27438246b = $1d6902f2c8ca2182$var$create();
+$1d6902f2c8ca2182$export$acaf96a27438246b.iterable = $1d6902f2c8ca2182$var$iterable;
+
+
 /* MIT License
 Copyright (c) 2023 Simon Y. Blackwell & 2019 Ophir LOJKINE
 
@@ -268,67 +330,6 @@ const $7d92985b693b5ee7$export$bc86dfbf7795668c = $7d92985b693b5ee7$var$create()
 $7d92985b693b5ee7$export$bc86dfbf7795668c.iterable = $7d92985b693b5ee7$var$iterable;
 
 
-/* Portions of algorithm taken from old version of https://github.com/lovasoa/fast_array_intersect under MIT license */ const $1d6902f2c8ca2182$var$create = (iterating)=>{
-    let i, j, base, nOthers, args, memory, seen, diff;
-    return function() {
-        const set = this instanceof Set;
-        if (!args) {
-            args = [
-                ...arguments
-            ], base = set ? [
-                ...this
-            ] : this;
-            diff = new Set();
-            i = 0;
-            j = 0;
-        }
-        for(; i < base.length; i++){
-            let item = base[i];
-            for(; j < args.length; j++){
-                const arg = args[j];
-                if (Array.isArray(arg) ? arg.includes(item) : arg.has(item)) break;
-            }
-            if (j === args.length) {
-                if (iterating) {
-                    i++;
-                    j = 0;
-                    return {
-                        value: item
-                    };
-                }
-                diff.add(item);
-            }
-            j = 0;
-        }
-        args = null;
-        return iterating ? {
-            done: true
-        } : set ? diff : [
-            ...diff
-        ];
-    };
-};
-function $1d6902f2c8ca2182$var$iterable(...args) {
-    const difference = $1d6902f2c8ca2182$var$create(true), ctx = this;
-    let started;
-    return {
-        next () {
-            if (started) return difference();
-            started = true;
-            return difference.call(ctx, ...args);
-        },
-        [Symbol.iterator] () {
-            started = false;
-            return this;
-        },
-        ...(0, $2e79f34cf327f706$export$a42bef84e41fffbb)
-    };
-}
-const $1d6902f2c8ca2182$export$acaf96a27438246b = $1d6902f2c8ca2182$var$create();
-$1d6902f2c8ca2182$export$acaf96a27438246b.iterable = $1d6902f2c8ca2182$var$iterable;
-
-
-
 /* MIT License
 Copyright (c) 2023 Simon Y. Blackwell
 
@@ -373,7 +374,7 @@ SOFTWARE.
             const array = arrays[i];
             for(; j < array.length; j++){
                 const item = array[j];
-                if (!memory.has(item)) {
+                if (!(diff.has(item) || memory.has(item))) {
                     memory.add(item);
                     for(; k < sets.length; k++){
                         if (k === i) continue;
@@ -394,6 +395,8 @@ SOFTWARE.
             j = 0;
         }
         arrays = null;
+        sets = null;
+        memory = null;
         return iterating ? {
             done: true
         } : set ? diff : [

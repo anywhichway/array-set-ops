@@ -268,7 +268,7 @@ describe("Array",() => {
         expect(result[1]).to.equal(2);
         expect(result[2]).to.equal(3);
     })
-    it("class symmetricDifference",() => {
+    it("symmetricDifference",() => {
         const array = new Array(1,2,4),
             result = array.symmetricDifference([3,4]);
         expect(result.length).to.equal(3);
@@ -276,15 +276,61 @@ describe("Array",() => {
         expect(result[1]).to.equal(2);
         expect(result[2]).to.equal(3);
     })
+    it("symmetricDifference Array and Set",() => {
+        const array = new Array(1,2,4),
+            result = array.symmetricDifference(new Set([3,4]));
+        expect(result.length).to.equal(3);
+        expect(result[0]).to.equal(1);
+        expect(result[1]).to.equal(2);
+        expect(result[2]).to.equal(3);
+    })
+    it("symmetricDifference Set and Set",() => {
+        const set = new Set([1,2,4]),
+            result = set.symmetricDifference(new Set([3,4]));
+        expect(result.size).to.equal(3);
+        expect(result.at(0)).to.equal(1);
+        expect(result.at(1)).to.equal(2);
+        expect(result.at(2)).to.equal(3);
+    })
     it("isSubsetOf",() => {
         const array = new Array(1,2,4),
             result = array.isSubsetOf([1,2,3,4,5]);
         expect(result).to.equal(true)
     })
+    it("isSubsetOf - false",() => {
+        const array = new Array(1,2,4),
+            result = array.isSubsetOf([3,4,5]);
+        expect(result).to.equal(false)
+    })
+    it("isSubsetOf Set Set",() => {
+        const set = new Set([1,2,4]),
+            result = set.isSubsetOf(new Set([1,2,3,4,5]));
+        expect(result).to.equal(true)
+    })
+    it("isSubsetOf Set Set - false",() => {
+        const set = new Set([1,2,4]),
+            result = set.isSubsetOf(new Set([3,4,5]));
+        expect(result).to.equal(false)
+    })
+    it("isSubsetOf Set Set - false by size",() => {
+        const set = new Set([1,2,4]),
+            result = set.isSubsetOf(new Set([3,4,]));
+        expect(result).to.equal(false)
+    })
     it("isSupersetOf",() => {
         const array = new Array(1,2,4),
             result = array.isSupersetOf([1,2]);
         expect(result).to.equal(true)
+    })
+    it("isSupersetOf - false",() => {
+        const array = new Array(1,2,4),
+            result = array.isSupersetOf([1,2,3]);
+        expect(result).to.equal(false)
+    })
+    it("isSupersetOf Sets - false by size",() => {
+        const set = new Set([1,2,4]),
+            result = set.isSupersetOf(new Set([1,2,3,4]));
+        expect(result).to.equal(false)
     })
     it("isDisjointFrom",() => {
         const array = new Array(1,2,4),
@@ -295,6 +341,56 @@ describe("Array",() => {
         const array = new Array(1,2,4),
             result = array.isDisjointFrom([1,2,4,5]);
         expect(result).to.equal(false)
+    })
+    it("isSubsetOf Set and Array",() => {
+        const set = new Set([1,2,4]),
+            result = set.isSubsetOf([1,2,3,4,5]);
+        expect(result).to.equal(true)
+    })
+    it("isSupersetOf Set and Array",() => {
+        const set = new Set([1,2,4]),
+            result = set.isSupersetOf([1,2]);
+        expect(result).to.equal(true)
+    })
+    it("isDisjointFrom Set and Array",() => {
+        const set = new Set([1,2,4]),
+            result = set.isDisjointFrom([5,6,7]);
+        expect(result).to.equal(true)
+    })
+    it("isSubsetOf Array and Set",() => {
+        const array = new Array(1,2,4),
+            result = array.isSubsetOf(new Set([1,2,3,4,5]));
+        expect(result).to.equal(true)
+    })
+    it("isSupersetOf Array and Set",() => {
+        const array = new Array(1,2,4),
+            result = array.isSupersetOf(new Set([1,2]));
+        expect(result).to.equal(true)
+    })
+    it("isDisjointFrom Array and Set",() => {
+        const array = new Array(1,2,4),
+            result = array.isDisjointFrom(new Set([5,6,7]));
+        expect(result).to.equal(true)
+    })
+    it("isDisjointFrom Array and Set - false",() => {
+        const array = new Array(1,2,4),
+            result = array.isDisjointFrom(new Set([1,2,4,5]));
+        expect(result).to.equal(false)
+    })
+    it("isSubsetOf Set and Set",() => {
+        const set = new Set([1,2,4]),
+            result = set.isSubsetOf(new Set([1,2,3,4,5]));
+        expect(result).to.equal(true)
+    })
+    it("isSupersetOf Set and Set",() => {
+        const set = new Set([1,2,4]),
+            result = set.isSupersetOf(new Set([1,2]));
+        expect(result).to.equal(true)
+    })
+    it("isDisjointFrom Set and Set",() => {
+        const set = new Set([1,2,4]),
+            result = set.isDisjointFrom(new Set([5,6,7]));
+        expect(result).to.equal(true)
     })
 })
 
