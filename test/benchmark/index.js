@@ -17,6 +17,11 @@ import fastCartesian from 'fast-cartesian';
 import bigCartesian from 'big-cartesian';
 import intersect from "fast_array_intersect";
 
+import {intersection as intersectionGenerator} from "./intersection-generator.js"
+import {difference as differenceGenerator} from "./difference-generator.js";
+import {union as unionGenerator} from "./union-generator.js";
+import {symmetricDifference as symmetricDifferenceGenerator}  from "./symmetric-difference-generator.js"
+
 classPrototype.patch(Set);
 Object.assign(Set.prototype,loopFunctions);
 Object.assign(Set.prototype,aggregateFunctions);
@@ -58,11 +63,24 @@ dsuite.add("difference",() => {
         const result = arg1.difference(arg2,arg3);
         size = result.length;
     })
+    .add("Array difference generator first",() => {
+        size = 0;
+        for(const item of differenceGenerator(arg1,arg2,arg3)) {
+            size = 1;
+            break;
+        }
+    })
     .add("Array difference.iterable first",() => {
         size = 0;
         for(const item of arg1.difference.iterable(arg2,arg3)) {
             size = 1;
             break;
+        }
+    })
+    .add("Array difference generator",() => {
+        size = 0;
+        for(const item of differenceGenerator(arg1,arg2,arg3)) {
+            size++;
         }
     })
     .add("Array difference.iterable",() => {
@@ -87,6 +105,13 @@ const isuite = new Benchmark.Suite;
         const result = arg1.intersection(arg2,arg3);
         size = result.length;
     })
+    .add("intersection generator first",() => {
+        size = 0;
+        for(const item of intersectionGenerator(arg1,arg2,arg3)) {
+            size = 1;
+            break;
+        }
+    })
     .add("intersection.iterable first",() => {
         size = 0;
         for(const item of arg1.intersection.iterable(arg2,arg3)) {
@@ -94,7 +119,13 @@ const isuite = new Benchmark.Suite;
             break;
         }
     })
-    .add("intersect.iterable",() => {
+    .add("intersection generator",() => {
+        size = 0;
+        for(const item of intersectionGenerator(arg1,arg2,arg3)) {
+            size++;
+        }
+    })
+    .add("intersection.iterable",() => {
         size = 0;
         for(const item of arg1.intersection.iterable(arg2,arg3)) {
            size++;
@@ -120,11 +151,24 @@ ssuite.add("symmetricDifference",() => {
     const result = arg1.symmetricDifference(arg2,arg3);
     size = result.length;
 })
+    .add("symmetricDifferenceGenerator first",() => {
+        size = 0;
+        for(const item of symmetricDifferenceGenerator(arg1,arg2,arg3)) {
+            size = 1;
+            break;
+        }
+    })
     .add("symmetricDifference.iterable first",() => {
         size = 0;
         for(const item of arg1.symmetricDifference.iterable(arg2,arg3)) {
             size = 1;
             break;
+        }
+    })
+    .add("symmetricDifferenceGenerator",() => {
+        size = 0;
+        for(const item of symmetricDifferenceGenerator(arg1,arg2,arg3)) {
+            size++;
         }
     })
     .add("symmetricDifference.iterable",() => {
@@ -149,11 +193,24 @@ usuite.add("union",() => {
     const result = arg1.union(arg2,arg3);
     size = result.length;
 })
+    .add("unionGenerator first",() => {
+        size = 0;
+        for(const item of unionGenerator(arg1,arg2,arg3)) {
+            size = 1;
+            break;
+        }
+    })
     .add("union.iterable first",() => {
         size = 0;
         for(const item of arg1.union.iterable(arg2,arg3)) {
             size = 1;
             break;
+        }
+    })
+    .add("unionGenerator",() => {
+        size = 0;
+        for(const item of unionGenerator(arg1,arg2,arg3)) {
+            size++;
         }
     })
     .add("union.iterable",() => {

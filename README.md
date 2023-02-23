@@ -66,8 +66,6 @@ for(const item of cp.slice.iterable(start,end)) { // on demand iteration as the 
 }
 ```
 
-Additionally, the generic nature of generators makes them slightly slower than custom iterables and `CartesianProduct` is a custom iterable.
-
 See the [#benchmarks](Benchmarks) below.
 
 ### Set Operations
@@ -354,9 +352,15 @@ union.iterable first x 74,245 ops/sec ±0.98% (87 runs sampled) 1
 union.iterable x 64.74 ops/sec ±1.61% (64 runs sampled) 79910
 ```
 
+# FAQ
+
+Why not use generators instead of custom iterator interally? By sharing the code base we save size and ensure that idential algoritms are used.
+
 # Change History (Reverse Chronological Order)
 
-2023-02-23 v0.4.4 Corrected speed summary close to top of README.
+2023-02-23 v0.4.5 Abstracted out `createIterable` to reduce size of code base. Added generator versions of set operations to performance testing.
+
+2023-02-22 v0.4.4 Corrected speed summary close to top of README.
 
 2023-02-22 v0.4.3 More unit tests. Optimized `difference` and `symmetricDifference`.
 

@@ -42,11 +42,10 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
  */
 
-import {loopFunctions} from "./loop-functions.js";
-import difference from "./difference.js";
+import {createIterable} from "./create-iterable.js";
 
-/* Portions of algorithm taken from old version of https://github.com/lovasoa/fast_array_intersect under MIT license */
-const create = (iterating) => {
+/* Portions of algorithm taken from https://gist.github.com/lovasoa/3361645 under MIT license */
+const unionizor = (iterating) => {
     let i, j, nOthers, args, memory;
     return function() {
         const set = this instanceof Set;
@@ -96,8 +95,9 @@ function iterable(...args) {
     }
 }
 
-const union = create();
-union.iterable = iterable;
+const union = unionizor();
+//union.iterable = iterable;
+union.iterable = createIterable(unionizor)
 
 
 export {union,union as default};

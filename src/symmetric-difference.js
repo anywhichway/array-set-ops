@@ -44,10 +44,10 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
  */
 
-import {loopFunctions} from "./loop-functions.js";
-import difference from "./difference.js";
+import {createIterable} from "./create-iterable.js";
+
 /* Portions of algorithm taken from old version of https://github.com/lovasoa/fast_array_intersect under MIT license */
-const create = (iterating) => {
+const differ = (iterating) => {
     let i, j, k, arrays,  sets, memory, diff;
     return function() {
         const set = this instanceof Set;
@@ -88,28 +88,8 @@ const create = (iterating) => {
         return iterating ? {done:true} : (set ? diff : [...diff]);
     }
 }
-function iterable(...args) {
-    const symmetricDifference = create(true),
-        ctx = this;
-    let started;
-    return {
-        next() {
-            if (started) {
-                return symmetricDifference();
-            }
-            started = true;
-            return symmetricDifference.call(ctx,...args);
-        },
-        [Symbol.iterator]() {
-            started = false;
-            return this;
-        },
-        ...loopFunctions
-    }
-}
 
-const symmetricDifference = create();
-symmetricDifference.iterable = iterable;
-
+const symmetricDifference = differ();
+symmetricDifference.iterable = createIterable(differ);
 
 export {symmetricDifference,symmetricDifference as default}

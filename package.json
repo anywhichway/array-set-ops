@@ -1,7 +1,7 @@
 {
   "name": "array-set-ops",
-  "version": "0.4.4",
-  "description": "Extremely fast set and map/reduce operations for Arrays and Sets",
+  "version": "0.4.5",
+  "description": "Extremely fast set and map/reduce operations for Arrays and Sets plus CartesianProducts",
   "type": "module",
   "source": "src/index.js",
   "browser": "browser/array-set-ops.js",

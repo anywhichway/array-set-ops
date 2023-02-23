@@ -20,9 +20,10 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
  */
 
-import {loopFunctions} from "./loop-functions.js";
 
-const create = (iterating) => {
+import {createIterable} from "./create-iterable.js";
+
+const differ = (iterating) => {
     let i, j, base, args, diff, memory;
     return function () {
         if(!args) {
@@ -59,28 +60,8 @@ const create = (iterating) => {
         return iterating ? { done: true} : (Array.isArray(this) ? [...diff] : diff);
     }
 }
-function iterable(...args) {
-    const difference = create(true),
-        ctx = this;
-    let started;
-    return {
-        next() {
-            if (started) {
-                return difference();
-            }
-            started = true;
-            return difference.call(ctx,...args);
-        },
-        [Symbol.iterator]() {
-            started = false;
-            return this;
-        },
-        ...loopFunctions
-    }
-}
 
-const difference = create();
-difference.iterable = iterable;
-
+const difference = differ();
+difference.iterable = createIterable(differ);
 
 export {difference,difference as default}

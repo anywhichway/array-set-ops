@@ -20,10 +20,10 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
  */
 
-import {loopFunctions} from "./loop-functions.js";
+import {createIterable} from "./create-iterable.js";
 
 /* Portions of algorithm taken from old version of https://github.com/lovasoa/fast_array_intersect under MIT license */
-    const create = (iterating) => {
+    const intersector = (iterating) => {
         let i, j, len, nOthers, args, result, memory;
         return function() {
             const set = this instanceof Set;
@@ -64,27 +64,8 @@ import {loopFunctions} from "./loop-functions.js";
             return iterating ? {done:true} : (set ? new Set(result) : result);
         }
     }
-function iterable(...args) {
-    const intersect = create(true),
-        ctx = this;
-    let started;
-    return {
-        next() {
-            if (started) {
-                return intersect();
-            }
-            started = true;
-            return intersect.call(ctx,...args);
-        },
-        [Symbol.iterator]() {
-            started = false;
-            return this;
-        },
-        ...loopFunctions
-    }
-}
 
-const intersection = create();
-intersection.iterable = iterable;
+const intersection = intersector();
+intersection.iterable = createIterable(intersector);
 
 export {intersection,intersection as default};

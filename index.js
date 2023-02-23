@@ -183,7 +183,27 @@ Object.defineProperty($2e79f34cf327f706$export$a42bef84e41fffbb, "slice", {
 });
 
 
-const $1d6902f2c8ca2182$var$create = (iterating)=>{
+function $83be53f676a4c193$export$f9c2f07d6e2a6221(setFunction) {
+    return function(...args) {
+        const f = setFunction(true), ctx = this;
+        let started;
+        return {
+            next () {
+                if (started) return f(); // fast, don't push args on stack, not needed!
+                started = true;
+                return f.call(ctx, ...args);
+            },
+            [Symbol.iterator] () {
+                started = false; // reset so iteration can be done again
+                return this;
+            },
+            ...(0, $2e79f34cf327f706$export$a42bef84e41fffbb)
+        };
+    };
+}
+
+
+const $1d6902f2c8ca2182$var$differ = (iterating)=>{
     let i, j, base, args, diff, memory;
     return function() {
         if (!args) {
@@ -225,24 +245,8 @@ const $1d6902f2c8ca2182$var$create = (iterating)=>{
         ] : diff;
     };
 };
-function $1d6902f2c8ca2182$var$iterable(...args) {
-    const difference = $1d6902f2c8ca2182$var$create(true), ctx = this;
-    let started;
-    return {
-        next () {
-            if (started) return difference();
-            started = true;
-            return difference.call(ctx, ...args);
-        },
-        [Symbol.iterator] () {
-            started = false;
-            return this;
-        },
-        ...(0, $2e79f34cf327f706$export$a42bef84e41fffbb)
-    };
-}
-const $1d6902f2c8ca2182$export$acaf96a27438246b = $1d6902f2c8ca2182$var$create();
-$1d6902f2c8ca2182$export$acaf96a27438246b.iterable = $1d6902f2c8ca2182$var$iterable;
+const $1d6902f2c8ca2182$export$acaf96a27438246b = $1d6902f2c8ca2182$var$differ();
+$1d6902f2c8ca2182$export$acaf96a27438246b.iterable = (0, $83be53f676a4c193$export$f9c2f07d6e2a6221)($1d6902f2c8ca2182$var$differ);
 
 
 /* MIT License
@@ -266,7 +270,7 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
  */ 
-/* Portions of algorithm taken from old version of https://github.com/lovasoa/fast_array_intersect under MIT license */ const $7d92985b693b5ee7$var$create = (iterating)=>{
+/* Portions of algorithm taken from old version of https://github.com/lovasoa/fast_array_intersect under MIT license */ const $7d92985b693b5ee7$var$intersector = (iterating)=>{
     let i, j, len, nOthers, args, result, memory;
     return function() {
         const set = this instanceof Set;
@@ -310,24 +314,8 @@ SOFTWARE.
         } : set ? new Set(result) : result;
     };
 };
-function $7d92985b693b5ee7$var$iterable(...args) {
-    const intersect = $7d92985b693b5ee7$var$create(true), ctx = this;
-    let started;
-    return {
-        next () {
-            if (started) return intersect();
-            started = true;
-            return intersect.call(ctx, ...args);
-        },
-        [Symbol.iterator] () {
-            started = false;
-            return this;
-        },
-        ...(0, $2e79f34cf327f706$export$a42bef84e41fffbb)
-    };
-}
-const $7d92985b693b5ee7$export$bc86dfbf7795668c = $7d92985b693b5ee7$var$create();
-$7d92985b693b5ee7$export$bc86dfbf7795668c.iterable = $7d92985b693b5ee7$var$iterable;
+const $7d92985b693b5ee7$export$bc86dfbf7795668c = $7d92985b693b5ee7$var$intersector();
+$7d92985b693b5ee7$export$bc86dfbf7795668c.iterable = (0, $83be53f676a4c193$export$f9c2f07d6e2a6221)($7d92985b693b5ee7$var$intersector);
 
 
 /* MIT License
@@ -352,8 +340,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
  */ 
 
-
-/* Portions of algorithm taken from old version of https://github.com/lovasoa/fast_array_intersect under MIT license */ const $795045768c282dd9$var$create = (iterating)=>{
+/* Portions of algorithm taken from old version of https://github.com/lovasoa/fast_array_intersect under MIT license */ const $795045768c282dd9$var$differ = (iterating)=>{
     let i, j, k, arrays, sets, memory, diff;
     return function() {
         const set = this instanceof Set;
@@ -404,24 +391,8 @@ SOFTWARE.
         ];
     };
 };
-function $795045768c282dd9$var$iterable(...args) {
-    const symmetricDifference = $795045768c282dd9$var$create(true), ctx = this;
-    let started;
-    return {
-        next () {
-            if (started) return symmetricDifference();
-            started = true;
-            return symmetricDifference.call(ctx, ...args);
-        },
-        [Symbol.iterator] () {
-            started = false;
-            return this;
-        },
-        ...(0, $2e79f34cf327f706$export$a42bef84e41fffbb)
-    };
-}
-const $795045768c282dd9$export$4cd1b4d03646b02c = $795045768c282dd9$var$create();
-$795045768c282dd9$export$4cd1b4d03646b02c.iterable = $795045768c282dd9$var$iterable;
+const $795045768c282dd9$export$4cd1b4d03646b02c = $795045768c282dd9$var$differ();
+$795045768c282dd9$export$4cd1b4d03646b02c.iterable = (0, $83be53f676a4c193$export$f9c2f07d6e2a6221)($795045768c282dd9$var$differ);
 
 
 /* MIT License
@@ -465,8 +436,7 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
  */ 
-
-/* Portions of algorithm taken from old version of https://github.com/lovasoa/fast_array_intersect under MIT license */ const $4e80d28291a67501$var$create = (iterating)=>{
+/* Portions of algorithm taken from https://gist.github.com/lovasoa/3361645 under MIT license */ const $4e80d28291a67501$var$unionizor = (iterating)=>{
     let i, j, nOthers, args, memory;
     return function() {
         const set = this instanceof Set;
@@ -506,7 +476,7 @@ SOFTWARE.
     };
 };
 function $4e80d28291a67501$var$iterable(...args) {
-    const union = $4e80d28291a67501$var$create(true), ctx = this;
+    const union = create(true), ctx = this;
     let started;
     return {
         next () {
@@ -518,11 +488,12 @@ function $4e80d28291a67501$var$iterable(...args) {
             started = false;
             return this;
         },
-        ...(0, $2e79f34cf327f706$export$a42bef84e41fffbb)
+        ...loopFunctions
     };
 }
-const $4e80d28291a67501$export$971dd5b0dfd021b6 = $4e80d28291a67501$var$create();
-$4e80d28291a67501$export$971dd5b0dfd021b6.iterable = $4e80d28291a67501$var$iterable;
+const $4e80d28291a67501$export$971dd5b0dfd021b6 = $4e80d28291a67501$var$unionizor();
+//union.iterable = iterable;
+$4e80d28291a67501$export$971dd5b0dfd021b6.iterable = (0, $83be53f676a4c193$export$f9c2f07d6e2a6221)($4e80d28291a67501$var$unionizor);
 
 
 /* MIT License
