@@ -43,7 +43,7 @@ let l1 = args.length*Math.random(),
     arg2 = args.slice(l2).sort((a,b) => Math.random()>.5 ? 1 : - 1),
     arg3 = args.slice(l3).sort((a,b) => Math.random()>.5 ? 1 : - 1);
 console.log("Lengths:",arg1.length,arg2.length,arg3.length)
-let size;
+let size, expectedSize;
 
 const csuite = new Benchmark.Suite;
 ///csuite.add("cartesianProduct",() => {
@@ -61,29 +61,43 @@ gc();
 const dsuite = new Benchmark.Suite;
 dsuite.add("difference",() => {
         const result = arg1.difference(arg2,arg3);
-        size = result.length;
+        expectedSize = size = result.length;
     })
-    .add("Array difference generator first",() => {
+    .add("difference generator first",() => {
         size = 0;
         for(const item of differenceGenerator(arg1,arg2,arg3)) {
             size = 1;
             break;
         }
     })
-    .add("Array difference.iterable first",() => {
+    .add("difference.iterable first",() => {
         size = 0;
         for(const item of arg1.difference.iterable(arg2,arg3)) {
             size = 1;
             break;
         }
     })
-    .add("Array difference generator",() => {
+    .add("Array difference generator 50%",() => {
+        size = 0;
+        for(const item of differenceGenerator(arg1,arg2,arg3)) {
+            size++;
+            if(size>=expectedSize/2) break;
+        }
+    })
+    .add("difference.iterable 50%",() => {
+        size = 0;
+        for(const item of arg1.difference.iterable(arg2,arg3)) {
+            size++;
+            if(size>=expectedSize/2) break;
+        }
+    })
+    .add("difference generator",() => {
         size = 0;
         for(const item of differenceGenerator(arg1,arg2,arg3)) {
             size++;
         }
     })
-    .add("Array difference.iterable",() => {
+    .add("difference.iterable",() => {
         size = 0;
         for(const item of arg1.difference.iterable(arg2,arg3)) {
             size++;
@@ -103,7 +117,7 @@ dsuite.add("difference",() => {
 const isuite = new Benchmark.Suite;
     isuite.add("intersection",() => {
         const result = arg1.intersection(arg2,arg3);
-        size = result.length;
+        expectedSize = size = result.length;
     })
     .add("intersection generator first",() => {
         size = 0;
@@ -117,6 +131,20 @@ const isuite = new Benchmark.Suite;
         for(const item of arg1.intersection.iterable(arg2,arg3)) {
             size = 1;
             break;
+        }
+    })
+    .add("intersection generator 50%",() => {
+        size = 0;
+        for(const item of intersectionGenerator(arg1,arg2,arg3)) {
+            size++;
+            if(size>=expectedSize/2) break;
+        }
+    })
+    .add("intersection.iterable 50%",() => {
+        size = 0;
+        for(const item of arg1.intersection.iterable(arg2,arg3)) {
+            size++;
+            if(size>=expectedSize/2) break;
         }
     })
     .add("intersection generator",() => {
@@ -149,7 +177,7 @@ const isuite = new Benchmark.Suite;
 const ssuite = new Benchmark.Suite;
 ssuite.add("symmetricDifference",() => {
     const result = arg1.symmetricDifference(arg2,arg3);
-    size = result.length;
+    expectedSize = size = result.length;
 })
     .add("symmetricDifferenceGenerator first",() => {
         size = 0;
@@ -163,6 +191,20 @@ ssuite.add("symmetricDifference",() => {
         for(const item of arg1.symmetricDifference.iterable(arg2,arg3)) {
             size = 1;
             break;
+        }
+    })
+    .add("symmetricDifferenceGenerator 50%",() => {
+        size = 0;
+        for(const item of symmetricDifferenceGenerator(arg1,arg2,arg3)) {
+            size++;
+            if(size>=expectedSize/2) break;
+        }
+    })
+    .add("symmetricDifference.iterable 50%",() => {
+        size = 0;
+        for(const item of arg1.symmetricDifference.iterable(arg2,arg3)) {
+            size++;
+            if(size>=expectedSize/2) break;
         }
     })
     .add("symmetricDifferenceGenerator",() => {
@@ -191,7 +233,7 @@ ssuite.add("symmetricDifference",() => {
 const usuite = new Benchmark.Suite;
 usuite.add("union",() => {
     const result = arg1.union(arg2,arg3);
-    size = result.length;
+    expectedSize = size = result.length;
 })
     .add("unionGenerator first",() => {
         size = 0;
@@ -205,6 +247,20 @@ usuite.add("union",() => {
         for(const item of arg1.union.iterable(arg2,arg3)) {
             size = 1;
             break;
+        }
+    })
+    .add("unionGenerator 50%",() => {
+        size = 0;
+        for(const item of unionGenerator(arg1,arg2,arg3)) {
+            size = 1;
+            if(size>=expectedSize/2) break;
+        }
+    })
+    .add("union.iterable 50%",() => {
+        size = 0;
+        for(const item of arg1.union.iterable(arg2,arg3)) {
+            size = 1;
+            if(size>=expectedSize/2) break;
         }
     })
     .add("unionGenerator",() => {

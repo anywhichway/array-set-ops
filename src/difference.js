@@ -24,10 +24,11 @@ SOFTWARE.
 import {createIterable} from "./create-iterable.js";
 
 const differ = (iterating) => {
-    let i, j, base, args, diff, memory;
+    let i, j, base, args, len, diff, memory;
     return function () {
         if(!args) {
-            args =[].map.call(arguments,(arg) => arg instanceof Set ? arg : new Set(arg)),
+            args = [].map.call(arguments,(arg) => arg instanceof Set ? arg : new Set(arg));
+            len = args.length;
             base = Array.isArray(this) ? this : [...this];
             diff = new Set();
             memory = new Set();
@@ -38,9 +39,8 @@ const differ = (iterating) => {
             let item = base[i];
             if(!(diff.has(item) || memory.has(item))) { // if it is not already part of the difference or seen
                 memory.add(item);
-                for (; j < args.length; j++) { // see if another arg contains it
-                    const arg = args[j];
-                    if (arg.has(item)) {
+                for (; j < len; j++) { // see if another arg contains it
+                    if (args[j].has(item)) {
                         break; // it is contained
                     }
                 }

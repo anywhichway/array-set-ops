@@ -81,14 +81,16 @@ Each of the above also has a form:
 
 `<operation>.iterable(...iterables)` where `operation` is one of `difference`, `intersection`, `symmetricDifference`, `union`.
 
-These iterable versions can prevent the blocking of a data processing pipeline by returning values on demand rather than all at once. The gains in performance depend heavily on the nature of the data processed but are typically as follows:
+These iterable versions can prevent the blocking of a data processing pipeline by returning values on demand rather than all at once. The gains in performance depend heavily on the nature of the data processed but are typically as follows for yielding the first item:
 
 - difference, 1.5 to 2x
 - intersection, 1.5 to 2x
 - symmetricDifference, 2.5 to 3x
 - union, 2.5 to 3 orders of magnitude
 
-The below function return true if the named predicate is true of the base for all the iterables passed in.
+See the [#benchmarks](Benchmarks) below.
+
+The below functions return true if the named predicate is true of the base for all the iterables passed in.
 
 ```javascript
 import {isDisjointFrom,isSubsetOf,isSupersetOf} from "array-set-ops";
@@ -285,21 +287,21 @@ See the file `./test/index.js` for more examples.
 Unit testing is conducted with Mocha and C8.
 
 ```
+File                     | % Stmts | % Branch | % Funcs | % Lines | Uncovered Line #s
 -------------------------|---------|----------|---------|---------|----------------------------------------------------------
-File                     | % Stmts | % Branch | % Funcs | % Lines | Uncovered Line #s                                        
--------------------------|---------|----------|---------|---------|----------------------------------------------------------
-All files                |   82.67 |    91.62 |   68.96 |   82.67 |                                                         
+All files                |   83.76 |     90.9 |   67.92 |   83.76 |                                                         
  aggregate-functions.js  |   45.45 |      100 |       0 |   45.45 | 4-8,11,14-19                                            
  cartesian-product.js    |   79.47 |    90.62 |   78.57 |   79.47 | 51-54,66-67,78-96,130-131,146-149                       
- difference.js           |     100 |       85 |     100 |     100 | 30,43,61                                                
+ create-iterable.js      |     100 |      100 |     100 |     100 |                                                         
+ difference.js           |     100 |    81.25 |     100 |     100 | 30-32,60                                                
  index.js                |   98.03 |       90 |      70 |   98.03 | 18                                                      
- intersection.js         |   97.77 |    96.15 |     100 |   97.77 | 54-55                                                   
+ intersection.js         |   97.18 |    95.23 |     100 |   97.18 | 54-55                                                   
  is-disjoint-from.js     |     100 |      100 |     100 |     100 |                                                         
  is-subset-of.js         |     100 |      100 |     100 |     100 |                                                         
  is-superset-of.js       |     100 |      100 |     100 |     100 |                                                         
  loop-functions.js       |   49.72 |    77.77 |   52.94 |   49.72 | 9-10,23-32,35-39,75,78-96,99-104,112-123,132-143,152-174
- symmetric-difference.js |   80.86 |    90.47 |      50 |   80.86 | 76-78,91-109                                             
- union.js                |     100 |      100 |     100 |     100 |                                                         
+ symmetric-difference.js |   96.84 |    90.47 |     100 |   96.84 | 76-78                                                   
+ union.js                |     100 |       95 |     100 |     100 | 61                                                      
 -------------------------|---------|----------|---------|---------|----------------------------------------------------------
 ```
 
@@ -307,16 +309,16 @@ All files                |   82.67 |    91.62 |   68.96 |   82.67 |
 
 Benchmarking involves applying set functions to 3 sequences of random lengths between 1 and 99999 containing random numbers between -99 and 99, 50% of which are randomly negative. The sizes of the results are shown on each line.
 
-`Lengths: 16711 73790 9949`
+`Lengths: 69844 54956 46350`
 
 ## Cartesian Product
 
 ``````
-CartesianProduct first x 129,798 ops/sec ±1.52% (86 runs sampled) 1233104690
-bigCartesian first x 102,802 ops/sec ±0.78% (89 runs sampled) 1233104690
-generatorCartesian first x 113,300 ops/sec ±0.86% (90 runs sampled) 1233104690
-CartesianProduct item at 10% point 123310469 x 130,534 ops/sec ±0.56% (88 runs sampled) 1233104690
-bigCartesian item at 10% point 123310469 x 0.05 ops/sec ±8.22% (5 runs sampled) 1233104690
+CartesianProduct first x 133,496 ops/sec ±0.65% (87 runs sampled) 3838346864
+bigCartesian first x 108,580 ops/sec ±0.97% (90 runs sampled) 3838346864
+generatorCartesian first x 113,336 ops/sec ±2.07% (88 runs sampled) 3838346864
+CartesianProduct item at 10% point 383834686 x 118,814 ops/sec ±7.25% (83 runs sampled) 3838346864
+bigCartesian item at 10% point 383834686 x 0.01 ops/sec ±29.96% (5 runs sampled) 3838346864
 ```
 
 ## Difference
@@ -330,26 +332,38 @@ Array difference.iterable x 27.76 ops/sec ±9.26% (51 runs sampled) 8028
 ## Intersection
 
 ```
-intersection x 171 ops/sec ±1.87% (76 runs sampled) 4981
-intersection.iterable first x 424 ops/sec ±0.91% (85 runs sampled) 1
-intersect.iterable x 161 ops/sec ±1.81% (78 runs sampled) 4981
-fast_array_intersect x 165 ops/sec ±1.11% (77 runs sampled) 4981
+intersection x 64.49 ops/sec ±1.58% (65 runs sampled) 23553
+intersection generator first x 87.25 ops/sec ±1.39% (72 runs sampled) 1
+intersection.iterable first x 91.24 ops/sec ±1.57% (74 runs sampled) 1
+intersection generator 50% x 64.65 ops/sec ±5.63% (64 runs sampled) 11777
+intersection.iterable 50% x 65.28 ops/sec ±2.17% (65 runs sampled) 11777
+intersection generator x 60.02 ops/sec ±1.56% (61 runs sampled) 23553
+intersection.iterable x 57.03 ops/sec ±1.47% (58 runs sampled) 23553
+fast_array_intersect x 53.87 ops/sec ±4.26% (55 runs sampled) 23553
 ```
 
 ## Symmetric Difference
 
 ```
-symmetricDifference x 11.89 ops/sec ±3.39% (33 runs sampled) 66358
-symmetricDifference.iterable first x 36.78 ops/sec ±2.48% (49 runs sampled) 1
-symmetricDifference.iterable x 12.04 ops/sec ±1.27% (32 runs sampled) 66358
+symmetricDifference x 12.63 ops/sec ±1.02% (34 runs sampled) 44251
+symmetricDifferenceGenerator first x 39.34 ops/sec ±1.70% (51 runs sampled) 1
+symmetricDifference.iterable first x 33.49 ops/sec ±7.69% (38 runs sampled) 1
+symmetricDifferenceGenerator 50% x 18.52 ops/sec ±32.37% (41 runs sampled) 22126
+symmetricDifference.iterable 50% x 22.31 ops/sec ±2.07% (40 runs sampled) 22126
+symmetricDifferenceGenerator x 11.53 ops/sec ±2.55% (33 runs sampled) 44251
+symmetricDifference.iterable x 11.08 ops/sec ±2.49% (32 runs sampled) 44251
 ```
 
 ## Union
 
 ```
-union x 74.73 ops/sec ±2.25% (63 runs sampled) 79910
-union.iterable first x 74,245 ops/sec ±0.98% (87 runs sampled) 1
-union.iterable x 64.74 ops/sec ±1.61% (64 runs sampled) 79910
+union x 59.75 ops/sec ±2.38% (60 runs sampled) 94308
+unionGenerator first x 4,163,765 ops/sec ±0.73% (84 runs sampled) 1 // suspect!
+union.iterable first x 76,947 ops/sec ±1.69% (83 runs sampled) 1
+unionGenerator 50% x 39.24 ops/sec ±8.40% (54 runs sampled) 1
+union.iterable 50% x 70.85 ops/sec ±0.79% (68 runs sampled) 1
+unionGenerator x 42.54 ops/sec ±1.81% (55 runs sampled) 94308
+union.iterable x 71.16 ops/sec ±0.93% (69 runs sampled) 68185
 ```
 
 # FAQ
@@ -357,6 +371,8 @@ union.iterable x 64.74 ops/sec ±1.61% (64 runs sampled) 79910
 Why not use generators instead of custom iterator interally? By sharing the code base we save size and ensure that idential algoritms are used.
 
 # Change History (Reverse Chronological Order)
+
+2023-02-24 v0.4.6 Added more performance tests. Minor optimizations to `union`.
 
 2023-02-23 v0.4.5 Abstracted out `createIterable` to reduce size of code base. Added generator versions of set operations to performance testing.
 

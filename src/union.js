@@ -46,19 +46,19 @@ import {createIterable} from "./create-iterable.js";
 
 /* Portions of algorithm taken from https://gist.github.com/lovasoa/3361645 under MIT license */
 const unionizor = (iterating) => {
-    let i, j, nOthers, args, memory;
-    return function() {
-        const set = this instanceof Set;
-        if(!args) {
-            args = [this,...arguments];
+    let i, j, ctx, nOthers, thisDone, args, memory;
+    return function(...args) {
+        if(!ctx) {
+            ctx = Array.isArray(this) ? this : [...this];
             nOthers = args.length - 1;
             memory = new Set();
+            thisDone = false;
             i = 0;
             j = 0;
         }
-        for(;i<=nOthers;i++) {
-            let array = args[i];
-            if(!Array.isArray(array)) args[i] = array = [...array];
+        while(i<=nOthers) {
+            let array = thisDone ? args[i++] : ctx;
+            array = array===ctx || Array.isArray(array) ? array : [...array];
             const len = array.length;
             while(j<len) {
                 const elem = array[j++];
@@ -69,29 +69,11 @@ const unionizor = (iterating) => {
                     }
                 }
             }
+            thisDone = true;
             j=0;
         }
-        args = null;
-        return iterating ? {done:true} : (set ? memory : [...memory]);
-    }
-}
-function iterable(...args) {
-    const union = create(true),
-        ctx = this;
-    let started;
-    return {
-        next() {
-            if (started) {
-                return union();
-            }
-            started = true;
-            return union.call(ctx,...args);
-        },
-        [Symbol.iterator]() {
-            started = false;
-            return this;
-        },
-        ...loopFunctions
+        ctx = null;
+        return iterating ? {done:true} : this instanceof Set ? memory : [...memory];
     }
 }
 

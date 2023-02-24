@@ -186,15 +186,11 @@ Object.defineProperty($2e79f34cf327f706$export$a42bef84e41fffbb, "slice", {
 function $83be53f676a4c193$export$f9c2f07d6e2a6221(setFunction) {
     return function(...args) {
         const f = setFunction(true), ctx = this;
-        let started;
         return {
             next () {
-                if (started) return f(); // fast, don't push args on stack, not needed!
-                started = true;
                 return f.call(ctx, ...args);
             },
             [Symbol.iterator] () {
-                started = false; // reset so iteration can be done again
                 return this;
             },
             ...(0, $2e79f34cf327f706$export$a42bef84e41fffbb)
@@ -204,10 +200,12 @@ function $83be53f676a4c193$export$f9c2f07d6e2a6221(setFunction) {
 
 
 const $1d6902f2c8ca2182$var$differ = (iterating)=>{
-    let i, j, base, args, diff, memory;
+    let i, j, base, args, len, diff, memory;
     return function() {
         if (!args) {
-            args = [].map.call(arguments, (arg)=>arg instanceof Set ? arg : new Set(arg)), base = Array.isArray(this) ? this : [
+            args = [].map.call(arguments, (arg)=>arg instanceof Set ? arg : new Set(arg));
+            len = args.length;
+            base = Array.isArray(this) ? this : [
                 ...this
             ];
             diff = new Set();
@@ -219,9 +217,8 @@ const $1d6902f2c8ca2182$var$differ = (iterating)=>{
             let item = base[i];
             if (!(diff.has(item) || memory.has(item))) {
                 memory.add(item);
-                for(; j < args.length; j++){
-                    const arg = args[j];
-                    if (arg.has(item)) break; // it is contained
+                for(; j < len; j++){
+                    if (args[j].has(item)) break; // it is contained
                 }
                 if (j === args.length) {
                     diff.add(item);
@@ -437,22 +434,21 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
  */ 
 /* Portions of algorithm taken from https://gist.github.com/lovasoa/3361645 under MIT license */ const $4e80d28291a67501$var$unionizor = (iterating)=>{
-    let i, j, nOthers, args, memory;
-    return function() {
-        const set = this instanceof Set;
-        if (!args) {
-            args = [
-                this,
-                ...arguments
+    let i, j, ctx, nOthers, thisDone, args, memory;
+    return function(...args) {
+        if (!ctx) {
+            ctx = Array.isArray(this) ? this : [
+                ...this
             ];
             nOthers = args.length - 1;
             memory = new Set();
+            thisDone = false;
             i = 0;
             j = 0;
         }
-        for(; i <= nOthers; i++){
-            let array = args[i];
-            if (!Array.isArray(array)) args[i] = array = [
+        while(i <= nOthers){
+            let array = thisDone ? args[i++] : ctx;
+            array = array === ctx || Array.isArray(array) ? array : [
                 ...array
             ];
             const len = array.length;
@@ -465,32 +461,17 @@ SOFTWARE.
                     };
                 }
             }
+            thisDone = true;
             j = 0;
         }
-        args = null;
+        ctx = null;
         return iterating ? {
             done: true
-        } : set ? memory : [
+        } : this instanceof Set ? memory : [
             ...memory
         ];
     };
 };
-function $4e80d28291a67501$var$iterable(...args) {
-    const union = create(true), ctx = this;
-    let started;
-    return {
-        next () {
-            if (started) return union();
-            started = true;
-            return union.call(ctx, ...args);
-        },
-        [Symbol.iterator] () {
-            started = false;
-            return this;
-        },
-        ...loopFunctions
-    };
-}
 const $4e80d28291a67501$export$971dd5b0dfd021b6 = $4e80d28291a67501$var$unionizor();
 //union.iterable = iterable;
 $4e80d28291a67501$export$971dd5b0dfd021b6.iterable = (0, $83be53f676a4c193$export$f9c2f07d6e2a6221)($4e80d28291a67501$var$unionizor);
