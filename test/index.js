@@ -150,7 +150,7 @@ describe("Cartesian",() => {
             i++
         }
     })
-    xit("Array cartesianProduct",() => {
+    it("Array cartesianProduct",() => {
         const product = [1,2].cartesianProduct([2,1]);
         expect(product.length).to.equal(4);
         expect(product.at(0)[0]).to.equal(1);

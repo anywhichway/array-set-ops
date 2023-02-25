@@ -62,12 +62,11 @@ const unionizor = (iterating) => {
             const len = array.length;
             while(j<len) {
                 const elem = array[j++];
-                if(!memory.has(elem)) {
+                if(iterating && !memory.has(elem)) {
                     memory.add(elem);
-                    if(iterating) {
-                        return {value:elem}
-                    }
+                    return {value:elem}
                 }
+                memory.add(elem);
             }
             thisDone = true;
             j=0;

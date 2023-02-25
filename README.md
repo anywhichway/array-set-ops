@@ -372,6 +372,8 @@ Why not use generators instead of custom iterator interally? By sharing the code
 
 # Change History (Reverse Chronological Order)
 
+2023-02-25 v0.4.7 Minor optimization to union. Activated unit test on `.cartesianProduct`.
+
 2023-02-24 v0.4.6 Added more performance tests. Minor optimizations to `union`.
 
 2023-02-23 v0.4.5 Abstracted out `createIterable` to reduce size of code base. Added generator versions of set operations to performance testing.
