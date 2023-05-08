@@ -5,6 +5,7 @@ import union from "./union.js";
 import isDisjointFrom from "./is-disjoint-from.js";
 import isSupersetOf from "./is-superset-of.js";
 import isSubsetOf from "./is-subset-of.js";
+import {createIterable} from "./create-iterable.js";
 
 const classPrototype = {
     patch(cls) {
@@ -47,5 +48,6 @@ export {
     u as union,
     sub as isSubsetOf,
     sup as isSupersetOf,
-    dis as isDisjointFrom
+    dis as isDisjointFrom,
+    createIterable
 }

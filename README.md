@@ -77,9 +77,15 @@ The four functions below return an Array or Set depending on class of the first 
 - `symmetricDifference(...iterables)` returns all items that exist in at most one of the iterables.
 - `union(...iterables)`
 
-Each of the above also has a form:
+Each of the above you can also create an iterable version:
 
-`<operation>.iterable(...iterables)` where `operation` is one of `difference`, `intersection`, `symmetricDifference`, `union`.
+```javascript
+import {createIterable,intersection} from "array-set-ops";
+
+for(const item of createIterable(intersection)(...iterables)) {
+    ...
+};
+```
 
 These iterable versions can prevent the blocking of a data processing pipeline by returning values on demand rather than all at once. The gains in performance depend heavily on the nature of the data processed but are typically as follows for yielding the first item:
 
@@ -289,19 +295,19 @@ Unit testing is conducted with Mocha and C8.
 ```
 File                     | % Stmts | % Branch | % Funcs | % Lines | Uncovered Line #s
 -------------------------|---------|----------|---------|---------|----------------------------------------------------------
-All files                |   83.76 |     90.9 |   67.92 |   83.76 |                                                         
+All files                |   84.24 |    90.62 |   69.81 |   84.24 |                                                         
  aggregate-functions.js  |   45.45 |      100 |       0 |   45.45 | 4-8,11,14-19                                            
- cartesian-product.js    |   79.47 |    90.62 |   78.57 |   79.47 | 51-54,66-67,78-96,130-131,146-149                       
+ cartesian-product.js    |   82.11 |    88.88 |   85.71 |   82.11 | 51-54,66-67,78-96,130-131                               
  create-iterable.js      |     100 |      100 |     100 |     100 |                                                         
  difference.js           |     100 |    81.25 |     100 |     100 | 30-32,60                                                
- index.js                |   98.03 |       90 |      70 |   98.03 | 18                                                      
+ index.js                |   98.11 |       90 |      70 |   98.11 | 19                                                      
  intersection.js         |   97.18 |    95.23 |     100 |   97.18 | 54-55                                                   
  is-disjoint-from.js     |     100 |      100 |     100 |     100 |                                                         
  is-subset-of.js         |     100 |      100 |     100 |     100 |                                                         
  is-superset-of.js       |     100 |      100 |     100 |     100 |                                                         
  loop-functions.js       |   49.72 |    77.77 |   52.94 |   49.72 | 9-10,23-32,35-39,75,78-96,99-104,112-123,132-143,152-174
  symmetric-difference.js |   96.84 |    90.47 |     100 |   96.84 | 76-78                                                   
- union.js                |     100 |       95 |     100 |     100 | 61                                                      
+ union.js                |     100 |    95.23 |     100 |     100 | 61                                                    
 -------------------------|---------|----------|---------|---------|----------------------------------------------------------
 ```
 
@@ -371,6 +377,8 @@ union.iterable x 71.16 ops/sec ±0.93% (69 runs sampled) 68185
 Why not use generators instead of custom iterator interally? By sharing the code base we save size and ensure that idential algoritms are used.
 
 # Change History (Reverse Chronological Order)
+
+2023-05-08 v0.5.0 Exporting `createIterable` because parcel drops `.iterable` on methods. From a doc perspective this looks like it is a breaking change, but it is not since things did nto work as previously documented.
 
 2023-02-25 v0.4.7 Minor optimization to union. Activated unit test on `.cartesianProduct`.
 
