@@ -188,6 +188,12 @@ describe("Array",() => {
         }
         expect(i).to.equal(2);
     })
+    it("intersection self args",() => {
+        const arg = [1,2,3];
+        const result = intersection(arg,arg);
+        expect(result.length).to.equal(3);
+        expect(result.every((item) => arg.includes(item))).to.equal(true);
+    })
     it("union",() => {
         const result = union([1,2,4],[3,4]);
         expect(result.length).to.equal(4);
@@ -216,6 +222,12 @@ describe("Array",() => {
             i++;
         }
         expect(i).to.equal(4);
+    })
+    it("union self args",() => {
+        const arg = [1,2,3];
+        const result = union(arg,arg);
+        expect(result.length).to.equal(3);
+        expect(result.every((item) => arg.includes(item))).to.equal(true);
     })
     it("union - spread",() => {
         const array = new Array(1,2,4),

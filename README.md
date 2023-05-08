@@ -378,6 +378,8 @@ Why not use generators instead of custom iterator interally? By sharing the code
 
 # Change History (Reverse Chronological Order)
 
+2023-05-08 v0.5.2 intersection and union optimizations for cases where there are duplicate arguments
+
 2023-05-08 v0.5.1 Fixed core build issue. Reverted export of `createIterable`.
 
 2023-05-08 v0.5.0 Exporting `createIterable` because parcel drops `.iterable` on methods. From a doc perspective this looks like it is a breaking change, but it is not since things did nto work as previously documented.

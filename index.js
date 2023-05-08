@@ -266,6 +266,9 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
  */ 
+function $7d92985b693b5ee7$var$onlyUnique(value, index, array) {
+    return index <= 1 || array.indexOf(value) === index;
+}
 /* Portions of algorithm taken from old version of https://github.com/lovasoa/fast_array_intersect under MIT license */ const $7d92985b693b5ee7$var$intersector = (iterating)=>{
     let i, j, len, nOthers, args, result, memory;
     return function() {
@@ -274,7 +277,7 @@ SOFTWARE.
             args = [
                 this,
                 ...arguments
-            ].sort((a, b)=>a.length - b.length);
+            ].filter($7d92985b693b5ee7$var$onlyUnique).sort((a, b)=>a.length - b.length);
             nOthers = args.length - 1;
             result = [];
             memory = new Map();
@@ -430,9 +433,13 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
  */ 
+function $4e80d28291a67501$var$onlyUnique(value, index, array) {
+    return array.indexOf(value) === index;
+}
 /* Portions of algorithm taken from https://gist.github.com/lovasoa/3361645 under MIT license */ const $4e80d28291a67501$var$unionizor = (iterating)=>{
     let i, j, ctx, nOthers, thisDone, args, memory;
     return function(...args) {
+        args = args.filter($4e80d28291a67501$var$onlyUnique);
         if (!ctx) {
             ctx = Array.isArray(this) ? this : [
                 ...this
@@ -619,5 +626,5 @@ const $cf838c15c8b009ba$export$22c04563e192ea02 = (base, ...rest)=>(0, $20098100
 const $cf838c15c8b009ba$export$3b086d46cb5f10ec = (base, ...rest)=>(0, $eacc4266f55dc114$export$3b086d46cb5f10ec).call(base, ...rest);
 
 
-export {$cf838c15c8b009ba$export$61c7cc1fdf4f602b as classPrototype, $cf838c15c8b009ba$export$61c7cc1fdf4f602b as default, $cf838c15c8b009ba$export$acaf96a27438246b as difference, $cf838c15c8b009ba$export$bc86dfbf7795668c as intersection, $cf838c15c8b009ba$export$4cd1b4d03646b02c as symmetricDifference, $cf838c15c8b009ba$export$971dd5b0dfd021b6 as union, $cf838c15c8b009ba$export$2b09cdc61b8a3240 as isSubsetOf, $cf838c15c8b009ba$export$22c04563e192ea02 as isSupersetOf, $cf838c15c8b009ba$export$3b086d46cb5f10ec as isDisjointFrom, $83be53f676a4c193$export$f9c2f07d6e2a6221 as createIterable};
+export {$cf838c15c8b009ba$export$61c7cc1fdf4f602b as classPrototype, $cf838c15c8b009ba$export$61c7cc1fdf4f602b as default, $cf838c15c8b009ba$export$acaf96a27438246b as difference, $cf838c15c8b009ba$export$bc86dfbf7795668c as intersection, $cf838c15c8b009ba$export$4cd1b4d03646b02c as symmetricDifference, $cf838c15c8b009ba$export$971dd5b0dfd021b6 as union, $cf838c15c8b009ba$export$2b09cdc61b8a3240 as isSubsetOf, $cf838c15c8b009ba$export$22c04563e192ea02 as isSupersetOf, $cf838c15c8b009ba$export$3b086d46cb5f10ec as isDisjointFrom};
 //# sourceMappingURL=index.js.map

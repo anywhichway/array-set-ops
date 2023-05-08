@@ -44,10 +44,15 @@ SOFTWARE.
 
 import {createIterable} from "./create-iterable.js";
 
+function onlyUnique(value, index, array) {
+    return array.indexOf(value) === index;
+}
+
 /* Portions of algorithm taken from https://gist.github.com/lovasoa/3361645 under MIT license */
 const unionizor = (iterating) => {
     let i, j, ctx, nOthers, thisDone, args, memory;
     return function(...args) {
+        args = args.filter(onlyUnique);
         if(!ctx) {
             ctx = Array.isArray(this) ? this : [...this];
             nOthers = args.length - 1;

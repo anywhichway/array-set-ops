@@ -22,13 +22,17 @@ SOFTWARE.
 
 import {createIterable} from "./create-iterable.js";
 
+function onlyUnique(value, index, array) {
+    return index<=1 || array.indexOf(value) === index;
+}
+
 /* Portions of algorithm taken from old version of https://github.com/lovasoa/fast_array_intersect under MIT license */
     const intersector = (iterating) => {
         let i, j, len, nOthers, args, result, memory;
         return function() {
             const set = this instanceof Set;
             if(!args) {
-                args = [this,...arguments].sort((a,b) => a.length - b.length);
+                args = [this,...arguments].filter(onlyUnique).sort((a,b) => a.length - b.length);
                 nOthers = args.length - 1;
                 result = [];
                 memory = new Map();
