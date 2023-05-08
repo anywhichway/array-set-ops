@@ -76,10 +76,10 @@ const unionizor = (iterating) => {
     }
 }
 
-const union = unionizor();
+const union = unionizor(),
 //union.iterable = iterable;
-union.iterable = createIterable(unionizor)
+iterableUnion = createIterable(unionizor)
 
 
-export {union,union as default};
+export {union,iterableUnion,union as default};
 

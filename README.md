@@ -77,12 +77,12 @@ The four functions below return an Array or Set depending on class of the first 
 - `symmetricDifference(...iterables)` returns all items that exist in at most one of the iterables.
 - `union(...iterables)`
 
-Each of the above you can also create an iterable version:
+Each of the above you can use an iterable version:
 
 ```javascript
-import {createIterable,intersection} from "array-set-ops";
+import {intersection} from "array-set-ops";
 
-for(const item of createIterable(intersection)(...iterables)) {
+for(const item of intersection.iterable(...iterables)) {
     ...
 };
 ```
@@ -377,6 +377,8 @@ union.iterable x 71.16 ops/sec ±0.93% (69 runs sampled) 68185
 Why not use generators instead of custom iterator interally? By sharing the code base we save size and ensure that idential algoritms are used.
 
 # Change History (Reverse Chronological Order)
+
+2023-05-08 v0.5.1 Fixed core build issue. Reverted export of `createIterable`.
 
 2023-05-08 v0.5.0 Exporting `createIterable` because parcel drops `.iterable` on methods. From a doc perspective this looks like it is a breaking change, but it is not since things did nto work as previously documented.
 

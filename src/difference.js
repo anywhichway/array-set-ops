@@ -61,7 +61,7 @@ const differ = (iterating) => {
     }
 }
 
-const difference = differ();
-difference.iterable = createIterable(differ);
+const difference = differ(),
+    iterableDifference = createIterable(differ);
 
-export {difference,difference as default}
+export {difference,iterableDifference,difference as default}

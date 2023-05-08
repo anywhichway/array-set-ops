@@ -1,7 +1,7 @@
 
 const chai = await import("chai"),
     expect = chai.expect,
-    {classPrototype,difference,intersection,symmetricDifference,union} = await import("../src/index.js"),
+    {classPrototype,difference,intersection,symmetricDifference,union} = await import("../index.js"),
     {loopFunctions} = await import("../src/loop-functions.js"),
     {aggregateFunctions} = await import("../src/aggregate-functions.js"),
     {cartesianProduct,CartesianProduct} = await import("../src/cartesian-product.js");
@@ -179,8 +179,7 @@ describe("Array",() => {
         expect(result[1]).to.equal(4);
     })
     it("intersection.iterable",() => {
-        const array = new Array(1,2,3,4),
-            result = array.intersection.iterable([2,4]);
+        const result = intersection.iterable([1,2,3,4],[2,4]);
         let i = 0;
         for(const item of result) {
             if(i===0) expect(item).to.equal(2);
@@ -207,8 +206,7 @@ describe("Array",() => {
         expect(result[3]).to.equal(3);
     })
     it("union.iterable",() => {
-        const array = new Array(1,2,4),
-            result = array.union.iterable([3,4]);
+        const result = union.iterable([1,2,4],[3,4]);
         let i = 0;
         for(const item of result) {
             if(i===0) expect(item).to.equal(1);
@@ -251,8 +249,7 @@ describe("Array",() => {
         expect(result[1]).to.equal(2);
     })
     it("difference.iterable",() => {
-        const array = new Array(1,2,4),
-            result = array.difference.iterable([3,4]);
+        const result = difference.iterable([1,2,4],[3,4]);
         let i = 0;
         for(const item of result) {
             if(i===0) expect(item).to.equal(1);

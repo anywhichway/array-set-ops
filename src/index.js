@@ -1,7 +1,7 @@
-import difference from "./difference.js";
-import intersection from "./intersection.js";
-import symmetricDifference from "./symmetric-difference.js";
-import union from "./union.js";
+import {difference,iterableDifference} from "./difference.js";
+import {intersection,iterableIntersection} from "./intersection.js";
+import {symmetricDifference,iterableSymmetricDifference} from "./symmetric-difference.js";
+import {union,iterableUnion} from "./union.js";
 import isDisjointFrom from "./is-disjoint-from.js";
 import isSupersetOf from "./is-superset-of.js";
 import isSubsetOf from "./is-subset-of.js";
@@ -31,9 +31,13 @@ const classPrototype = {
 }
 
 const d = (base,...rest) => difference.call(base,...rest);
+d.iterable = (base,...rest) => iterableDifference.call(base,...rest);
 const i = (base,...rest) => intersection.call(base,...rest);
+i.iterable = (base,...rest) => iterableIntersection.call(base,...rest);
 const s = (base,...rest) => symmetricDifference.call(base,...rest);
+s.iterable = (base,...rest) => iterableSymmetricDifference.call(base,...rest);
 const u = (base,...rest) => union.call(base,...rest);
+u.iterable = (base,...rest) => iterableUnion.call(base,...rest);
 
 const sub = (base,...rest) => isSubsetOf.call(base,...rest)
 const sup = (base,...rest) => isSupersetOf.call(base,...rest)
@@ -48,6 +52,5 @@ export {
     u as union,
     sub as isSubsetOf,
     sup as isSupersetOf,
-    dis as isDisjointFrom,
-    createIterable
+    dis as isDisjointFrom
 }

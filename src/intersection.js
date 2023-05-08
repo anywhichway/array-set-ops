@@ -65,7 +65,7 @@ import {createIterable} from "./create-iterable.js";
         }
     }
 
-const intersection = intersector();
-intersection.iterable = createIterable(intersector);
+const intersection = intersector(),
+    iterableIntersection = createIterable(intersector);
 
-export {intersection,intersection as default};
+export {intersection,iterableIntersection,intersection as default};

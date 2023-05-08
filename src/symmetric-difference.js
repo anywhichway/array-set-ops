@@ -89,7 +89,7 @@ const differ = (iterating) => {
     }
 }
 
-const symmetricDifference = differ();
-symmetricDifference.iterable = createIterable(differ);
+const symmetricDifference = differ(),
+    iterableSymmetricDifference = createIterable(differ);
 
-export {symmetricDifference,symmetricDifference as default}
+export {symmetricDifference,iterableSymmetricDifference,symmetricDifference as default}
